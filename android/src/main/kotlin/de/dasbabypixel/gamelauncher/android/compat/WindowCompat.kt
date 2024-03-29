@@ -1,6 +1,5 @@
 package de.dasbabypixel.gamelauncher.android.compat
 
-import android.R
 import android.content.Context
 import android.os.Build
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.InsetsType
 import de.dasbabypixel.gamelauncher.android.apilevel.Api16
 import de.dasbabypixel.gamelauncher.android.apilevel.Api30
@@ -86,22 +84,89 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
         impl.hide(types)
     }
 
-    private class Type {
+    class Type {
         companion object {
-            const val FIRST: Int = 1
-            const val LAST: Int = 1 shl 8
+            private const val FIRST: Int = 1
+            private const val LAST: Int = 1 shl 8
 
-            const val STATUS_BARS: Int = FIRST
-            const val NAVIGATION_BARS: Int = 1 shl 1
-            const val CAPTION_BAR: Int = 1 shl 2
+            private const val STATUS_BARS: Int = FIRST
+            private const val NAVIGATION_BARS: Int = 1 shl 1
+            private const val CAPTION_BAR: Int = 1 shl 2
 
-            const val IME: Int = 1 shl 3
+            private const val IME: Int = 1 shl 3
 
-            const val SYSTEM_GESTURES: Int = 1 shl 4
-            const val MANDATORY_SYSTEM_GESTURES: Int = 1 shl 5
-            const val TAPPABLE_ELEMENT: Int = 1 shl 6
+            private const val SYSTEM_GESTURES: Int = 1 shl 4
+            private const val MANDATORY_SYSTEM_GESTURES: Int = 1 shl 5
+            private const val TAPPABLE_ELEMENT: Int = 1 shl 6
 
-            const val DISPLAY_CUTOUT: Int = 1 shl 7
+            private const val DISPLAY_CUTOUT: Int = 1 shl 7
+
+            /**
+             * @return An insets type representing any system bars for displaying status.
+             */
+            fun statusBars() = STATUS_BARS
+
+            /**
+             * @return An insets type representing any system bars for navigation.
+             */
+            fun navigationBars() = NAVIGATION_BARS
+
+            /**
+             * @return An insets type representing the window of a caption bar.
+             */
+            fun captionBar() = CAPTION_BAR
+
+            /**
+             * @return An insets type representing the window of an {@link InputMethod}.
+             */
+            fun ime() = IME
+
+            /**
+             * Returns an insets type representing the system gesture insets.
+             *
+             * <p>The system gesture insets represent the area of a window where system gestures have
+             * priority and may consume some or all touch input, e.g. due to the a system bar
+             * occupying it, or it being reserved for touch-only gestures.
+             *
+             * <p>Simple taps are guaranteed to reach the window even within the system gesture insets,
+             * as long as they are outside the {@link #getSystemWindowInsets() system window insets}.
+             *
+             * <p>When {@link View#SYSTEM_UI_FLAG_LAYOUT_STABLE} is requested, an inset will be returned
+             * even when the system gestures are inactive due to
+             * {@link View#SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN} or
+             * {@link View#SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION}.
+             *
+             * @see #getSystemGestureInsets()
+             */
+            fun systemGestures() = SYSTEM_GESTURES
+
+            /**
+             * @see #getMandatorySystemGestureInsets
+             */
+            fun mandatorySystemGestures() = MANDATORY_SYSTEM_GESTURES
+
+            /**
+             * @see #getTappableElementInsets
+             */
+            fun tappableElement() = TAPPABLE_ELEMENT
+
+            /**
+             * Returns an insets type representing the area that used by {@link DisplayCutoutCompat}.
+             *
+             * <p>This is equivalent to the safe insets on {@link #getDisplayCutout()}.</p>
+             *
+             * @see DisplayCutoutCompat#getSafeInsetLeft()
+             * @see DisplayCutoutCompat#getSafeInsetTop()
+             * @see DisplayCutoutCompat#getSafeInsetRight()
+             * @see DisplayCutoutCompat#getSafeInsetBottom()
+             */
+            fun displayCutout() = DISPLAY_CUTOUT
+
+            /**
+             * @return All system bars. Includes {@link #statusBars()}, {@link #captionBar()} as well as
+             * {@link #navigationBars()}, but not {@link #ime()}.
+             */
+            fun systemBars() = STATUS_BARS or NAVIGATION_BARS or CAPTION_BAR
         }
     }
 
@@ -201,7 +266,7 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
 
                     // Fallback on the container view
                     if (view == null) {
-                        view = window.findViewById(R.id.content)
+                        view = window.findViewById(android.R.id.content)
                     }
 
                     if (view != null && view.hasWindowFocus()) {

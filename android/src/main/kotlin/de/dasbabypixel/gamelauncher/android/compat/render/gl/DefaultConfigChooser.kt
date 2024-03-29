@@ -11,7 +11,7 @@ class DefaultConfigChooser(withDepthBuffer: Boolean) :
     ComponentSizeChooser(8, 8, 8, 0, if (withDepthBuffer) 16 else 0, 0) {
 }
 
-class ComponentSizeChooser constructor(
+open class ComponentSizeChooser(
     redSize: Int, greenSize: Int, blueSize: Int,
     alphaSize: Int, depthSize: Int, stencilSize: Int
 ) : BaseConfigChooser(
@@ -26,31 +26,22 @@ class ComponentSizeChooser constructor(
     ), 0
 ) {
 
-    private var mValue: IntArray
+    private var mValue: IntArray = IntArray(1)
 
     // Subclasses can adjust these values:
-    protected var mRedSize: Int = 0
-    protected var mGreenSize: Int = 0
-    protected var mBlueSize: Int = 0
-    protected var mAlphaSize: Int = 0
-    protected var mDepthSize: Int = 0
-    protected var mStencilSize: Int = 0
-
-    init {
-        mValue = IntArray(1)
-        mRedSize = redSize
-        mGreenSize = greenSize
-        mBlueSize = blueSize
-        mAlphaSize = alphaSize
-        mDepthSize = depthSize
-        mStencilSize = stencilSize
-    }
+    protected var mRedSize: Int = redSize
+    protected var mGreenSize: Int = greenSize
+    protected var mBlueSize: Int = blueSize
+    protected var mAlphaSize: Int = alphaSize
+    protected var mDepthSize: Int = depthSize
+    protected var mStencilSize: Int = stencilSize
 
     override fun chooseConfig(
         egl: EGL10, display: EGLDisplay,
         configs: Array<EGLConfig?>
     ): EGLConfig? {
         for (config in configs) {
+            if (config == null) continue
             val d = findConfigAttrib(
                 egl, display, config,
                 EGL10.EGL_DEPTH_SIZE, 0

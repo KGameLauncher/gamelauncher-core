@@ -49,13 +49,10 @@ class EGLHelper(val contextFactory: EGLContextFactory, val configChooser: EGLCon
     }
 
     companion object {
-
-
         fun throwEglException(function: String, error: Int) {
             val message: String = formatEglError(function, error)
             Log.e(
-                "EglHelper", "throwEglException tid=" + Thread.currentThread().id + " "
-                        + message
+                "EglHelper", "throwEglException tid=" + Thread.currentThread().id + " " + message
             )
             throw RuntimeException(message)
         }

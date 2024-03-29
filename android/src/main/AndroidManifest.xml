@@ -1,5 +1,6 @@
 <manifest xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-feature android:glEsVersion="0x00020000" android:required="false" tools:targetApi="eclair"/>
+    <uses-sdk tools:overrideLibrary="androidx.appcompat.resources, androidx.fragment, androidx.activity, androidx.lifecycle.viewmodel.savedstate, androidx.loader, androidx.savedstate, androidx.drawerlayout, androidx.emoji2.viewsintegration, androidx.vectordrawable.animated, androidx.viewpager, androidx.customview, androidx.core, androidx.core.ktx, androidx.annotation.experimental, androidx.cursoradapter, androidx.lifecycle.process, androidx.lifecycle.runtime, androidx.startup, androidx.tracing, androidx.versionedparcelable, androidx.lifecycle.livedata, androidx.lifecycle.livedata.core, androidx.arch.core, androidx.interpolator"/>
     <application
             android:label="GameLauncher"
     >
