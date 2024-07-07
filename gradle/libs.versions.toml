@@ -2,7 +2,7 @@
 android-gradle-plugin = "8.2.0"
 desugar_jdk_libs_nio = "2.0.4"
 kotlin = "1.9.22"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
