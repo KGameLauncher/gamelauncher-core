@@ -5,6 +5,9 @@ import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import de.dasbabypixel.gamelauncher.android.compat.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -15,10 +18,14 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         hideActionBar()
         window.decorFitsSystemWindows(false)
-        val windowInsetsController = window.insetsControllerCompat
+//        val windowInsetsController = window.insetsControllerCompat
 
-        windowInsetsController.systemBarsBehaviour = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsControllerCompat.Type.systemBars())
+        val c = WindowCompat.getInsetsController(window, window.decorView)
+        c.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        c.hide(WindowInsetsCompat.Type.systemBars())
+
+//        windowInsetsController.systemBarsBehaviour = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//        windowInsetsController.hide(WindowInsetsControllerCompat.Type.systemBars())
 
         setContentView(ViewCompat.view(this))
     }

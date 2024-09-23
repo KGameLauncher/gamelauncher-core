@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -6,15 +8,22 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
+includeBuild("build-extensions")
 
 rootProject.name = "gamelauncher"
 
-include("android")
 include("api")
+include("common")
+//include("android")
+include("lwjgl")
+include("lwjgl:launcher")

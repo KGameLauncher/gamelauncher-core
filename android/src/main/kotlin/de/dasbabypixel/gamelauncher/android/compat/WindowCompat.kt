@@ -2,6 +2,7 @@ package de.dasbabypixel.gamelauncher.android.compat
 
 import android.content.Context
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -21,9 +22,9 @@ val Window.insetsControllerCompat: WindowInsetsControllerCompat
 class WindowCompat {
     companion object {
         fun setDecorFitsSystemWindows(window: Window, decorFitsSystemWindows: Boolean) {
-            if (Build.VERSION.SDK_INT >= 30) {
+            if (SDK_INT >= 30) {
                 Api30.setDecorFitsSystemWindows(window, decorFitsSystemWindows)
-            } else if (Build.VERSION.SDK_INT >= 16) {
+            } else if (SDK_INT >= 16) {
                 Api16.setDecorFitsSystemWindows(window, decorFitsSystemWindows)
             }
         }
@@ -35,7 +36,13 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
     private val `impl`: Impl
 
     init {
-        `impl` = Impl()
+        `impl` = if (SDK_INT >= 30) {
+            Impl30(window, view)
+        } else if (SDK_INT >= 20) {
+            Impl20(window, view)
+        } else {
+            Impl()
+        }
     }
 
     companion object {
@@ -100,6 +107,10 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
             private const val TAPPABLE_ELEMENT: Int = 1 shl 6
 
             private const val DISPLAY_CUTOUT: Int = 1 shl 7
+
+            fun first() = FIRST
+
+            fun last() = LAST
 
             /**
              * @return An insets type representing any system bars for displaying status.
@@ -171,13 +182,12 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
     }
 
     @RequiresApi(30)
-    private open class Impl30(val window: Window) : Impl() {
+    private open class Impl30(window: Window, view: View) : Impl20(window, view) {
         val insetsController = window.insetsController
 
         override fun show(@InsetsType types: Int) {
-            if (types and Type.IME != 0 && Build.VERSION.SDK_INT < 32) {
-                val imm =
-                    window.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (types and Type.ime() != 0 && SDK_INT < Build.VERSION_CODES.S_V2) {
+                val imm = window.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
                 // This is a strange-looking workaround by making a call and ignoring the result.
                 // We don't use the return value here, but isActive() has the side-effect of
@@ -207,9 +217,8 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
     @RequiresApi(20)
     private open class Impl20(val window: Window, val view: View) : Impl() {
         override fun show(typeMask: Int) {
-            var i = Type.FIRST
-            while (i <= Type.LAST
-            ) {
+            var i = Type.first()
+            while (i <= Type.last()) {
                 if ((typeMask and i) == 0) {
                     i = i shl 1
                     continue
@@ -229,7 +238,6 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
             decorView.systemUiVisibility = (decorView.systemUiVisibility and systemUiFlag.inv())
         }
 
-
         protected fun setWindowFlag(windowFlag: Int) {
             window.addFlags(windowFlag)
         }
@@ -240,18 +248,18 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
 
         private fun showForType(type: Int) {
             when (type) {
-                Type.STATUS_BARS -> {
+                Type.statusBars() -> {
                     unsetSystemUiFlag(View.SYSTEM_UI_FLAG_FULLSCREEN)
                     unsetWindowFlag(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     return
                 }
 
-                Type.NAVIGATION_BARS -> {
+                Type.navigationBars() -> {
                     unsetSystemUiFlag(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
                     return
                 }
 
-                Type.IME -> {
+                Type.ime() -> {
                     // We'll try to find an available textView to focus to show the IME
                     var view: View? = this.view
 
@@ -273,8 +281,7 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
                         val finalView = view
                         finalView.post {
                             val imm =
-                                finalView.context
-                                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                finalView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                             imm.showSoftInput(finalView, 0)
                         }
                     }
@@ -283,9 +290,8 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
         }
 
         override fun hide(typeMask: Int) {
-            var i = Type.FIRST
-            while (i <= Type.LAST
-            ) {
+            var i = Type.first()
+            while (i <= Type.last()) {
                 if ((typeMask and i) == 0) {
                     i = i shl 1
                     continue
@@ -297,19 +303,19 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
 
         private fun hideForType(type: Int) {
             when (type) {
-                Type.STATUS_BARS -> {
+                Type.statusBars() -> {
                     setSystemUiFlag(View.SYSTEM_UI_FLAG_FULLSCREEN)
                     return
                 }
 
-                Type.NAVIGATION_BARS -> {
+                Type.navigationBars() -> {
                     setSystemUiFlag(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
                     return
                 }
 
-                Type.IME -> (window.context
-                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                    .hideSoftInputFromWindow(window.decorView.windowToken, 0)
+                Type.ime() -> (window.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    window.decorView.windowToken, 0
+                )
             }
         }
 
@@ -326,8 +332,7 @@ class WindowInsetsControllerCompat(private val window: Window, private val view:
                 }
 
                 BEHAVIOR_SHOW_BARS_BY_TOUCH -> unsetSystemUiFlag(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE
-                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
             }
         }

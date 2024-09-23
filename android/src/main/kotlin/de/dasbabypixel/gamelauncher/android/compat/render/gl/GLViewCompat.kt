@@ -5,14 +5,17 @@ import android.opengl.GLSurfaceView
 import android.os.Build
 import android.util.Log
 import android.view.View
+import de.dasbabypixel.gamelauncher.android.MyGLSurfaceView
 import javax.microedition.khronos.egl.*
 
 class GLViewCompat {
     companion object {
         fun glView(context: Context): View {
-            val version = Build.VERSION.SDK_INT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                return MyGLSurfaceView(context);
+            }
 
-            return GLSurfaceView(context)
+            return GLSurfaceView1(context);
         }
     }
 }
