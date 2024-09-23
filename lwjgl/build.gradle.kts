@@ -2,10 +2,8 @@ plugins {
     id("gamelauncher-parent")
     id("gamelauncher-lwjgl")
     application
-//    `java-library`
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.shadow)
-//    alias(libs.plugins.launch4j)
     alias(libs.plugins.graal.native)
 }
 
@@ -36,15 +34,10 @@ graalvmNative {
                 languageVersion = JavaLanguageVersion.of(23)
                 vendor = JvmVendorSpec.GRAAL_VM
             }
+            this.imageName = "GameLauncher"
             mainClass = main
             useFatJar = true
             runtimeArgs(application.applicationDefaultJvmArgs)
-            buildArgs(
-                "-H:+UnlockExperimentalVMOptions",
-                "-H:+ForeignAPISupport",
-                "--enable-native-access=ALL-UNNAMED"
-            )
-            buildArgs("--features=de.dasbabypixel.gamelauncher.lwjgl.graal.ForeignRegistrationFeature")
             buildArgs("-O0") // Disable optimizations for faster build
         }
         forEach {
@@ -68,12 +61,12 @@ tasks {
     assemble {
         dependsOn(shadowJar)
     }
-    named<Jar>("nativeCompileClasspathJar") {
+    nativeCompileClasspathJar {
         dependsOn(shadowJar)
         shadowJar.get().outputs.files.singleFile.apply { println(this) }
         from(zipTree(shadowJar.map { it.outputs.files.singleFile }))
         from(sourceSets.named("graal").map { it.output })
-        println(this.archiveFile)
+        destinationDirectory = temporaryDir
     }
     shadowJar {
         archiveClassifier = null
