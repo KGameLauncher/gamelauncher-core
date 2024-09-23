@@ -10,7 +10,7 @@ shadow = "8.3.2"
 disruptor = "4.0.0"
 junit = "5.11.0"
 lwjgl = "3.3.4"
-joml = "1.10.7"
+joml = "1.10.8"
 launch4j = "3.0.6"
 graal-native = "0.10.3"
 
