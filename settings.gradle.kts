@@ -22,8 +22,5 @@ includeBuild("build-extensions")
 
 rootProject.name = "gamelauncher"
 
-include("api")
-include("common")
-//include("android")
-include("lwjgl")
+include("engine")
 include("lwjgl:launcher")

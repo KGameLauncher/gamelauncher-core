@@ -13,6 +13,7 @@ lwjgl = "3.3.4"
 joml = "1.10.7"
 launch4j = "3.0.6"
 graal-native = "0.10.3"
+idea-ext = "1.1.8"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
@@ -32,12 +33,14 @@ joml = { group = "org.joml", name = "joml", version.ref = "joml" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 launch4j = { id = "edu.sc.seis.launch4j", version.ref = "launch4j" }
 graal-native = { id = "org.graalvm.buildtools.native", version.ref = "graal-native" }
+idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "idea-ext" }
 
 [bundles]
 logging = [
