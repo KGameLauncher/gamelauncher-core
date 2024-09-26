@@ -13,7 +13,7 @@ lwjgl = "3.3.4"
 joml = "1.10.7"
 launch4j = "3.0.6"
 graal-native = "0.10.3"
-idea-ext = "1.1.8"
+idea-ext = "1.1.9"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
