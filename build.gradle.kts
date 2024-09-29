@@ -15,7 +15,7 @@ idea.project.settings {
     runConfigurations {
         register<Application>("Main") {
             mainClass = "de.dasbabypixel.gamelauncher.lwjgl.MainKt"
-            moduleName = "gamelauncher.lwjgl.main"
+            moduleName = "gamelauncher.engine.lwjglMain"
             workingDirectory = "run"
         }
     }

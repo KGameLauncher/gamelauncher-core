@@ -2,13 +2,17 @@ package de.dasbabypixel.gamelauncher.api.util.concurrent
 
 import com.lmax.disruptor.RingBuffer
 import com.lmax.disruptor.SleepingWaitStrategy
+import com.lmax.disruptor.dsl.Disruptor
 import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.GameException
 import de.dasbabypixel.gamelauncher.api.util.function.GameCallable
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.api.util.resource.AbstractGameResource
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.locks.ReentrantLock
 
 expect abstract class AbstractThread : AbstractGameResource, Thread {
     constructor(group: ThreadGroup)
@@ -21,7 +25,7 @@ expect abstract class AbstractThread : AbstractGameResource, Thread {
     final override val group: ThreadGroup
     override val autoTrack: Boolean
 
-    fun start()
+    final override fun start()
     final override fun unpark()
     protected abstract fun run()
 }
@@ -35,8 +39,13 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     private val ringBuffer: RingBuffer<QueueEntry<out Any>> =
         RingBuffer.createMultiProducer(::QueueEntry, 1024, SleepingWaitStrategy())
     private val poller = ringBuffer.newPoller()
-    protected val exit = AtomicBoolean(false)
-    private val queueFinalized = AtomicBoolean(false)
+
+    @Volatile
+    private var exit = false
+    protected val lock = ReentrantLock()
+    protected val count = AtomicInteger(0)
+    protected val hasWork = lock.newCondition()
+    protected val hasWorkBool = AtomicBoolean(false)
 
     constructor(group: ThreadGroup) : super(group)
     constructor(group: ThreadGroup, daemon: Boolean) : super(group, daemon)
@@ -54,23 +63,51 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
             while (!shouldExit()) {
                 loop()
             }
-            queueFinalized.set(true)
             workQueue()
+            workExecution()
             stopExecuting()
+        } catch (t: Throwable) {
+            logger.error("Exception in thread {}", thread.name, t)
         } finally {
             logger.debug("Stopping $name")
         }
     }
 
-    protected fun loop() {
-
+    private fun loop() {
+        if (shouldWaitForSignal()) {
+            waitForSignal()
+        }
+        workQueue()
+        workExecution()
     }
 
-    protected fun signal() {
+    protected open fun signal() {
+        try {
+            lock.lock()
+            hasWorkBool.set(true)
+            hasWork.signal()
+        } finally {
+            lock.unlock()
+        }
+    }
 
+    protected open fun waitForSignal() {
+        try {
+            lock.lock()
+            while (!hasWorkBool.compareAndSet(true, false)) {
+                hasWork.awaitUninterruptibly()
+            }
+        } finally {
+            lock.unlock()
+        }
+    }
+
+    protected open fun shouldWaitForSignal(): Boolean {
+        return true
     }
 
     override fun <T> submit(callable: GameCallable<T>): CompletableFuture<T> {
+        if (exit) throw RejectedExecutionException("No new tasks can be submitted. The executor has been shut down")
         val fut = CompletableFuture<T>()
         if (currentThread() == this) {
             work(callable, fut)
@@ -81,13 +118,14 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
                 StackTraceSnapshot.new(),
                 callable
             )
+            if (exit) throw RejectedExecutionException("No new tasks can be submitted. The executor has been shut down")
             signal()
         }
         return fut
     }
 
     fun exit(): CompletableFuture<Unit>? {
-        exit.set(true)
+        exit = true
         signal()
         return null
     }
@@ -95,7 +133,7 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     final override fun cleanup0(): CompletableFuture<Unit>? = exit()
 
     protected open fun shouldExit(): Boolean {
-        return exit.get()
+        return exit
     }
 
     private fun <T> work(call: GameCallable<T>, future: CompletableFuture<T>) {
@@ -123,7 +161,12 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     protected fun workQueue() {
         poller.poll { e, sequence, endOfBatch ->
             if (Debug.calculateThreadStacks) cause = e.entry
-
+            try {
+                e.execute()
+            } catch (t: Throwable) {
+                logger.error("Failed to execute task {}", e.call, t)
+            }
+            e.clear()
             if (Debug.calculateThreadStacks) cause = null
             true
         }
@@ -133,7 +176,7 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     protected open fun workExecution() {}
     protected open fun stopExecuting() {}
 
-    private class QueueEntry<T>(
+    private class QueueEntry<T : Any>(
         var entry: StackTraceSnapshot? = null,
         var call: GameCallable<T>? = null,
         var future: CompletableFuture<T>? = null
@@ -143,6 +186,10 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
             this.entry = entry
             this.call = call as GameCallable<T>?
             this.future = future as CompletableFuture<T>?
+        }
+
+        fun execute() {
+            future!!.complete(call!!.call())
         }
 
         fun clear() {

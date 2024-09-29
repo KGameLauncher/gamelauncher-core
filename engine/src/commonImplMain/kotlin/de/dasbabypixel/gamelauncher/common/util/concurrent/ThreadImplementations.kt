@@ -8,18 +8,19 @@ import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.api.util.resource.AbstractGameResource
 import de.dasbabypixel.gamelauncher.api.util.resource.ResourceTracker.stopTracking
 import java.util.*
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.locks.LockSupport
 import java.lang.Thread as JThread
 import java.lang.ThreadGroup as JThreadGroup
 
 class CommonThreadGroup : CThreadGroup {
     override val name: String
-    override val parent: ThreadGroup
+    override val parent: ThreadGroup?
     val group: JThreadGroup
 
     constructor(group: JThreadGroup) {
         this.name = group.name
-        this.parent = ThreadGroupCache[group.parent]
+        this.parent = group.parent?.let { ThreadGroupCache[it] }
         this.group = group
     }
 
@@ -93,8 +94,9 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
         threadImpl.isDaemon = daemon
     }
 
-    fun start() {
+    final override fun start() {
         threadImpl.start()
+        logger.info("Started thread")
         track()
     }
 
@@ -104,7 +106,7 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
 
     private fun run0() {
         try {
-
+            run()
         } catch (e: Throwable) {
             logger.error("Uncaught exception in $name", e)
             stopTracking()
@@ -125,8 +127,34 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
 }
 
 object CommonThreadHelper {
+    val initialThread = JThread.currentThread()
+    private val mappedInitialThread = object : Thread {
+        override val name: String
+            get() = initialThread.name
+        override val group: ThreadGroup = ThreadGroupCache[initialThread.threadGroup]
+        override val stackTrace: Array<StackTraceElement>
+            get() = initialThread.stackTrace
+
+        override fun start() {
+            throw UnsupportedOperationException("Initial thread already started")
+        }
+
+        override fun unpark() {
+            LockSupport.unpark(initialThread)
+        }
+
+        override val cleanedUp: Boolean
+            get() = false
+        override val cleanupFuture: CompletableFuture<Unit> = CompletableFuture()
+
+        override fun cleanup(): CompletableFuture<Unit> {
+            throw UnsupportedOperationException("Cleanup of the initial thread is not permitted")
+        }
+    }
+
     fun currentThread(): Thread {
         val thread = JThread.currentThread()
+        if (thread == initialThread) return mappedInitialThread
         if (thread !is ThreadHolder) throw IllegalStateException("Current thread is not a ThreadHolder")
         return thread.thread
     }

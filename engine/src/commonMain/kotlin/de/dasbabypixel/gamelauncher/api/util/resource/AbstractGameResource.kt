@@ -27,10 +27,9 @@ abstract class AbstractGameResource : GameResource.StackCapable {
     private val calledCleanup = AtomicBoolean(false)
     private val stackAvailable = AtomicBoolean(false)
 
-    override val cleanedUp: Boolean
-        get() = TODO("Not yet implemented")
-    override val cleanupFuture: CompletableFuture<Unit>
-        get() = TODO("Not yet implemented")
+    final override val cleanedUp: Boolean
+        get() = cleanupFuture.isDone
+    final override val cleanupFuture: CompletableFuture<Unit> = CompletableFuture()
 
     open val autoTrack
         get() = true

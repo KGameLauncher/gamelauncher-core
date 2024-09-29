@@ -2,7 +2,7 @@ plugins {
     id("gamelauncher-parent")
     id("gamelauncher-lwjgl")
 //    application
-    alias(libs.plugins.kotlin.multiplatform)
+//    alias(libs.plugins.kotlin.multiplatform)
 //    alias(libs.plugins.shadow)
 //    alias(libs.plugins.graal.native)
 }
@@ -49,56 +49,56 @@ val defaultArgs = listOf(
 //    }
 //}
 
-kotlin {
-    jvmToolchain(23)
-    jvm()
-    mingwX64("windows") {
-        binaries.executable()
-    }
-    linuxX64 {
-        binaries.executable()
-    }
-    macosX64 {
-        binaries.executable()
-    }
-
-    sourceSets {
-        commonMain {
-            dependencies {
-//                implementation(platform("org.lwjgl:lwjgl-bom:${lwjgl.version}"))
-//                implementation("org.lwjgl:lwjgl")
-//                implementation("org.lwjgl:lwjgl-glfw")
-//                implementation("org.lwjgl:lwjgl-opengl")
-//                implementation("org.lwjgl:lwjgl-opengles")
-//                implementation("org.lwjgl:lwjgl-stb")
+//kotlin {
+//    jvmToolchain(23)
+//    jvm()
+//    mingwX64("windows") {
+//        binaries.executable()
+//    }
+//    linuxX64 {
+//        binaries.executable()
+//    }
+//    macosX64 {
+//        binaries.executable()
+//    }
 //
-//                runtimeOnly("org.lwjgl", "lwjgl", classifier = lwjgl.natives)
-//                runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjgl.natives)
-//                runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjgl.natives)
-//                runtimeOnly("org.lwjgl", "lwjgl-opengles", classifier = lwjgl.natives)
-//                runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjgl.natives)
-//                implementation(libs.joml)
-//
-////    "graalImplementation"("org.graalvm.sdk:graal-sdk:24.1.0")
-////    "graalCompileOnly"(sourceSets.main.map { it.output })
-//
-//                implementation(projects.common)
-//                implementation(libs.bundles.logging.runtime)
-//                implementation(libs.disruptor)
-//                implementation(libs.bundles.jline)
-//                runtimeOnly(projects.lwjgl.launcher) {
-//                    targetConfiguration = "launcher"
-//                }
-            }
-        }
-    }
+//    sourceSets {
+//        commonMain {
+//            dependencies {
+////                implementation(platform("org.lwjgl:lwjgl-bom:${lwjgl.version}"))
+////                implementation("org.lwjgl:lwjgl")
+////                implementation("org.lwjgl:lwjgl-glfw")
+////                implementation("org.lwjgl:lwjgl-opengl")
+////                implementation("org.lwjgl:lwjgl-opengles")
+////                implementation("org.lwjgl:lwjgl-stb")
+////
+////                runtimeOnly("org.lwjgl", "lwjgl", classifier = lwjgl.natives)
+////                runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjgl.natives)
+////                runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjgl.natives)
+////                runtimeOnly("org.lwjgl", "lwjgl-opengles", classifier = lwjgl.natives)
+////                runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjgl.natives)
+////                implementation(libs.joml)
+////
+//////    "graalImplementation"("org.graalvm.sdk:graal-sdk:24.1.0")
+//////    "graalCompileOnly"(sourceSets.main.map { it.output })
+////
+////                implementation(projects.common)
+////                implementation(libs.bundles.logging.runtime)
+////                implementation(libs.disruptor)
+////                implementation(libs.bundles.jline)
+////                runtimeOnly(projects.lwjgl.launcher) {
+////                    targetConfiguration = "launcher"
+////                }
+//            }
+//        }
+//    }
 
 //    mingwX64("windows")
 //    linuxX64("linux")
 //    macosX64("macos")
-}
+//}
 
-tasks {
+//tasks {
 //    assemble {
 //        dependsOn(shadowJar)
 //    }
@@ -127,21 +127,21 @@ tasks {
 //        workingDir = rootProject.mkdir("run")
 //        mainClass = main
 //    }
-    withType<JavaExec>().configureEach {
-        jvmArgs(defaultArgs)
-        jvmArgs("--enable-preview")
-    }
+//    withType<JavaExec>().configureEach {
+//        jvmArgs(defaultArgs)
+//        jvmArgs("--enable-preview")
+//    }
 //    compileJava {
 //        options.compilerArgs.add("--enable-preview")
 //    }
 //    test {
 //        jvmArgs("--enable-preview")
 //    }
-}
+//}
+//
+//logging.captureStandardOutput(LogLevel.WARN)
 
-logging.captureStandardOutput(LogLevel.WARN)
-
-dependencies {
+//dependencies {
 //    implementation(platform("org.lwjgl:lwjgl-bom:${lwjgl.version}"))
 //    implementation("org.lwjgl:lwjgl")
 //    implementation("org.lwjgl:lwjgl-glfw")
@@ -166,4 +166,4 @@ dependencies {
 //    runtimeOnly(projects.lwjgl.launcher) {
 //        targetConfiguration = "launcher"
 //    }
-}
+//}

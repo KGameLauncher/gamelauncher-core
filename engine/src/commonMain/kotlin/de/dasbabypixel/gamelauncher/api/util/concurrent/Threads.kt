@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 
 expect sealed interface ThreadGroup {
     val name: String
-    val parent: ThreadGroup
+    val parent: ThreadGroup?
 
     companion object {
         fun create(name: String): ThreadGroup
@@ -39,6 +39,7 @@ interface Thread : ThreadHolder, GameResource {
     override val thread: Thread
         get() = this
 
+    fun start()
     fun unpark()
 
     fun ensureOnThread() {

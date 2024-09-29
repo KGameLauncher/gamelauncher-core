@@ -9,7 +9,7 @@ actual typealias ThreadMethods = CommonThreadMethods
 
 actual sealed interface ThreadGroup {
     actual val name: String
-    actual val parent: ThreadGroup
+    actual val parent: ThreadGroup?
 
     actual companion object {
         actual fun create(name: String): ThreadGroup {

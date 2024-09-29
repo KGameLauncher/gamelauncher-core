@@ -3,7 +3,7 @@ package de.dasbabypixel.gamelauncher.lwjgl.util.logging
 import de.dasbabypixel.gamelauncher.api.GameLauncher
 import de.dasbabypixel.gamelauncher.api.config.Config
 import de.dasbabypixel.gamelauncher.api.util.Debug
-import de.dasbabypixel.gamelauncher.api.util.extension.sleep
+import de.dasbabypixel.gamelauncher.api.util.concurrent.sleep
 import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import org.jline.reader.EndOfFileException

@@ -29,8 +29,10 @@ object Log4jConfiguration {
         Registry.register<LoggingPrintStream.Platform>(object : LoggingPrintStream.Platform {
             val walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE)
             val osc = LoggingPrintStream.OutputStreamConverter::class.java.name
-            val drop = listOf(OutputStream::class, PrintStream::class, OutputStreamWriter::class).map { it.java.name }
-                .plus("sun.nio.cs.StreamEncoder").toSet()
+            val drop = listOf(
+                OutputStream::class, PrintStream::class, OutputStreamWriter::class, Throwable::class, ThreadGroup::class
+            ).map { it.java.name }.plus(listOf("sun.nio.cs.StreamEncoder", "java.lang.Throwable\$WrappedPrintStream"))
+                .toSet()
 
             override fun createInstance(logger: Logger, printLocation: Boolean): LoggingPrintStream.PlatformInstance {
                 return object : LoggingPrintStream.PlatformInstance {

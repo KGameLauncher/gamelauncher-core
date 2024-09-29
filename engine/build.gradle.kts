@@ -62,7 +62,7 @@ kotlin {
 //    "graalImplementation"("org.graalvm.sdk:graal-sdk:24.1.0")
 //    "graalCompileOnly"(sourceSets.main.map { it.output })
 
-                runtimeOnly(libs.bundles.logging.runtime)
+                implementation(libs.bundles.logging.runtime)
                 implementation(libs.bundles.jline)
                 runtimeOnly(projects.lwjgl.launcher) {
                     targetConfiguration = "launcher"
