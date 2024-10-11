@@ -60,6 +60,7 @@ object CommonThreadMethods {
     }
 }
 
+@Suppress("LeakingThis")
 abstract class CommonAbstractThread : AbstractGameResource, Thread {
     companion object {
         val logger = getLogger<CommonAbstractThread>()
@@ -77,12 +78,12 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
         get() = false
 
     constructor(group: ThreadGroup) {
-        this.threadImpl = ThreadImpl(group, ::run0)
+        this.threadImpl = ThreadImpl(this, group, ::run0)
         this.actualGroup = ThreadGroupCache[threadImpl.threadGroup]
     }
 
     constructor(group: ThreadGroup, name: String) {
-        this.threadImpl = ThreadImpl(group, ::run0, name)
+        this.threadImpl = ThreadImpl(this, group, ::run0, name)
         this.actualGroup = ThreadGroupCache[threadImpl.threadGroup]
     }
 
@@ -115,14 +116,20 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
 
     protected abstract fun run()
 
-    protected class ThreadImpl : JThread {
-        constructor(group: ThreadGroup, runnable: Runnable) : super(
-            ThreadGroupCache[group], runnable
-        )
+    protected class ThreadImpl : JThread, ThreadHolder {
+        override val thread: Thread
 
-        constructor(group: ThreadGroup, runnable: Runnable, name: String) : super(
+        constructor(thread: Thread, group: ThreadGroup, runnable: Runnable) : super(
+            ThreadGroupCache[group], runnable
+        ) {
+            this.thread = thread
+        }
+
+        constructor(thread: Thread, group: ThreadGroup, runnable: Runnable, name: String) : super(
             ThreadGroupCache[group], runnable, name
-        )
+        ) {
+            this.thread = thread
+        }
     }
 }
 
@@ -155,7 +162,7 @@ object CommonThreadHelper {
     fun currentThread(): Thread {
         val thread = JThread.currentThread()
         if (thread == initialThread) return mappedInitialThread
-        if (thread !is ThreadHolder) throw IllegalStateException("Current thread is not a ThreadHolder")
+        if (thread !is ThreadHolder) throw IllegalStateException("Current thread $thread is not a ThreadHolder")
         return thread.thread
     }
 }

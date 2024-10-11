@@ -35,6 +35,7 @@ object GLFWThread : AbstractExecutorThread(glThreadGroup, "GLFW-Thread") {
             throw IllegalStateException("Failed to initialize GLFW")
         }
         initialized = true
+        GLFWMonitors // CL-Init GLFWMonitors
     }
 
     override fun workExecution() {
@@ -42,16 +43,23 @@ object GLFWThread : AbstractExecutorThread(glThreadGroup, "GLFW-Thread") {
     }
 
     override fun waitForSignal() {
-        if (hasWorkBool.compareAndSet(true, false)) {
-            lock.lock()
-            try {
-
-            } finally {
-                lock.unlock()
-            }
-            return
+        let {
+            if (hasWorkBool.get()) {
+                return // Work already scheduled, return
+            } else if (!initialized) {
+                lock.lock()
+                try {
+                    if (hasWorkBool.get()) return // Work scheduled, await can cause deadlock
+                    if (initialized) { // Could have been changed, now we are inside lock - recheck
+                        return@let
+                    }
+                    hasWork.await()
+                } finally {
+                    lock.unlock()
+                }
+                return
+            } else return@let
         }
-        logger.info("Wait")
         glfwWaitEvents()
     }
 
@@ -66,7 +74,7 @@ object GLFWThread : AbstractExecutorThread(glThreadGroup, "GLFW-Thread") {
                     return
                 }
                 hasWorkBool.set(true)
-                hasWork.signal()
+                hasWork.signalAll()
             } finally {
                 lock.unlock()
             }

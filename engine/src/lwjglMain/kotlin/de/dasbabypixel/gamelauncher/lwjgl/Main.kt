@@ -3,13 +3,14 @@ package de.dasbabypixel.gamelauncher.lwjgl
 import de.dasbabypixel.gamelauncher.api.GameLauncher
 import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.concurrent.sleep
+import de.dasbabypixel.gamelauncher.api.util.function.GameConsumer
 import de.dasbabypixel.gamelauncher.api.util.function.GameRunnable
 import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.api.util.resource.AbstractGameResource
 import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWThread
+import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWWindow
 import org.jline.jansi.Ansi
-import org.lwjgl.glfw.GLFW.*
 import java.util.concurrent.CompletableFuture
 import kotlin.concurrent.thread
 
@@ -41,19 +42,30 @@ fun started() {
     System.err.println("Test stderr")
 
 //    GLFWThread.
-    GLFWThread.start()
-    GLFWThread.submit(GameRunnable {
-        val window = glfwCreateWindow(500, 400, "Test", 0, 0)
+    GLFWThread.startThread()
+//    GLFWThread.submit(GameRunnable {
+//        val window = glfwCreateWindow(500, 400, "Test", 0, 0)
+//
+//        while (!glfwWindowShouldClose(window)) {
+//            println("Wait")
+//            glfwWaitEvents()
+//            println("Update")
+//            glfwPollEvents()
+//        }
+//        println("Destroy")
+//        glfwDestroyWindow(window)
+//    })
 
-        while (!glfwWindowShouldClose(window)) {
-            println("Wait")
-            glfwWaitEvents()
-            println("Update")
-            glfwPollEvents()
-        }
-        println("Destroy")
-        glfwDestroyWindow(window)
+    val window = GLFWWindow(null)
+    window.requestCloseCallback = GameConsumer {
+        it.hide().join()
+        GameLauncher.stop()
+    }
+    GLFWThread.submit(GameRunnable {
+        throw Exception("Test")
     })
+    window.create()
+    window.show()
 
     thread(isDaemon = false) {
         while (true) {

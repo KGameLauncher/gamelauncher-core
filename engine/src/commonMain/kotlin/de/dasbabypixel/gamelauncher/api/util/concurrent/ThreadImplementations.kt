@@ -2,7 +2,6 @@ package de.dasbabypixel.gamelauncher.api.util.concurrent
 
 import com.lmax.disruptor.RingBuffer
 import com.lmax.disruptor.SleepingWaitStrategy
-import com.lmax.disruptor.dsl.Disruptor
 import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.GameException
 import de.dasbabypixel.gamelauncher.api.util.function.GameCallable
@@ -55,6 +54,12 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     init {
         ringBuffer.addGatingSequences(poller.sequence)
     }
+
+    /**
+     * Function to start thread via `Thread#start`.
+     * IntelliJ doesn't seem to work well with multiplatform and inheritance, so this is a workaround
+     */
+    fun startThread() = start()
 
     final override fun run() {
         logger.debug("Starting $name")
@@ -164,7 +169,10 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
             try {
                 e.execute()
             } catch (t: Throwable) {
-                logger.error("Failed to execute task {}", e.call, t)
+                val ex = buildStackTrace()
+                ex.stackTrace = t.stackTrace
+                ex.initCause(t)
+                logger.error("Failed to execute task {}", e.call, ex)
             }
             e.clear()
             if (Debug.calculateThreadStacks) cause = null
