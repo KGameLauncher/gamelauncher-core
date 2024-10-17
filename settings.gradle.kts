@@ -23,4 +23,4 @@ includeBuild("build-extensions")
 rootProject.name = "gamelauncher"
 
 include("engine")
-include("lwjgl:launcher")
+include("executables")

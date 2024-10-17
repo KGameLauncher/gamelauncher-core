@@ -1,29 +1,20 @@
+import de.dasbabypixel.gamelauncher.gradle.lwjglDefaultDevArgs
+import de.dasbabypixel.gamelauncher.gradle.lwjglMain
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("gamelauncher-parent")
     id("gamelauncher-lwjgl")
+    `maven-publish`
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.graal.native)
 }
 
-val lwjglMain = "de.dasbabypixel.gamelauncher.lwjgl.MainKt"
-val lwjglLauncherMain = "de.dasbabypixel.gamelauncher.lwjgl.launcher.MainKt"
-val lwjglDefaultArgs = listOf(
-    "--enable-preview",
-    "--enable-native-access=ALL-UNNAMED",
-    "--add-opens=java.base/jdk.internal.io=ALL-UNNAMED",
-    "-Dgamelauncher.in_ide=true"
-)
-
 kotlin {
     jvmToolchain(23)
     jvm("lwjgl")
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    this.compilerOptions {
-        this.freeCompilerArgs.add("-Xexpect-actual-classes")
+    @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     sourceSets {
         commonMain {
@@ -65,9 +56,6 @@ kotlin {
 
                 implementation(libs.bundles.logging.runtime)
                 implementation(libs.bundles.jline)
-                runtimeOnly(projects.lwjgl.launcher) {
-                    targetConfiguration = "launcher"
-                }
             }
         }
         named("lwjglTest") {
@@ -82,6 +70,8 @@ kotlin {
 
 tasks {
     afterEvaluate {
+        // Double afterEvaluate to ensure we overwrite everything in multiplatform.
+        // One afterEvaluate was not enough
         afterEvaluate {
             named<JavaExec>("lwjglRun") {
                 outputs.upToDateWhen { false }
@@ -91,7 +81,7 @@ tasks {
                 classpath(mainCompilation.runtimeDependencyFiles)
                 workingDir(rootProject.mkdir("run"))
                 mainClass = lwjglMain
-                jvmArgs(lwjglDefaultArgs)
+                jvmArgs(lwjglDefaultDevArgs)
                 standardInput = System.`in`
                 standardOutput = System.out
                 errorOutput = System.err
@@ -99,5 +89,3 @@ tasks {
         }
     }
 }
-
-//logging.captureStandardOutput(LogLevel.WARN)

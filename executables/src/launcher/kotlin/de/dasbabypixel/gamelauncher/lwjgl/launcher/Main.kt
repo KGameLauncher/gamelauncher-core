@@ -11,15 +11,13 @@ import kotlin.concurrent.thread
 
 fun main() {
     val runtime = ManagementFactory.getRuntimeMXBean()
-    val currentJar = Path.of(Main::class.java.protectionDomain.codeSource.location.toURI()).toAbsolutePath().toString()
 
     val arguments = ArrayList<String>()
     arguments.add(resolveJavaExecutable())
-    arguments.add("--enable-native-access=ALL-UNNAMED")
-    arguments.add("--add-opens=java.base/jdk.internal.io=ALL-UNNAMED")
+    arguments.addAll(readJvmArgsFile())
 
     arguments.add("-cp")
-    arguments.add(buildClassPath(runtime, currentJar))
+    arguments.add(buildClassPath(runtime))
     arguments.add("de.dasbabypixel.gamelauncher.lwjgl.MainKt")
 
     Signal.handle(Signal("INT")) {
@@ -47,7 +45,15 @@ fun main() {
     }
 }
 
-private fun buildClassPath(runtime: RuntimeMXBean, currentJar: String): String {
+private fun readJvmArgsFile(): List<String> {
+    return Main::class.java.classLoader.getResourceAsStream("gamelauncher.jvmargs").use { `in` ->
+        `in`?.bufferedReader().use { reader ->
+            reader?.readLines() ?: emptyList()
+        }
+    }
+}
+
+private fun buildClassPath(runtime: RuntimeMXBean): String {
     return runtime.classPath
 }
 
