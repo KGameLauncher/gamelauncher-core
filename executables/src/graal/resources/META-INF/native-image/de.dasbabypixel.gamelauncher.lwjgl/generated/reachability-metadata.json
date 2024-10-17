@@ -49,6 +49,9 @@
       "type": "[Z"
     },
     {
+      "type": "android.os.Build$VERSION"
+    },
+    {
       "type": "com.fasterxml.jackson.databind.ObjectMapper"
     },
     {
@@ -58,6 +61,9 @@
           "name": "gatingSequences"
         }
       ]
+    },
+    {
+      "type": "com.lmax.disruptor.EventPoller"
     },
     {
       "type": "com.lmax.disruptor.Sequence",
@@ -117,6 +123,48 @@
     },
     {
       "type": "com.sun.management.internal.OperatingSystemImpl"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.GameLauncher$Companion"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.lifecycle.InitLifecycle"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.lifecycle.InitLifecycleImplementation"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.concurrent.AbstractExecutorThread"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.concurrent.AbstractExecutorThread$QueueEntry"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.concurrent.Executor$DefaultImpls"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.concurrent.ExecutorThread$DefaultImpls"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.concurrent.StackTraceSnapshot$Companion"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.extension.FunctionExtensionsKt$toCallable$$inlined$callable$1"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.api.util.resource.AbstractGameResource"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.common.util.concurrent.CommonAbstractThread"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.common.util.concurrent.CommonThreadHelper$mappedInitialThread$1"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.lwjgl.MainKt"
+    },
+    {
+      "type": "de.dasbabypixel.gamelauncher.lwjgl.MainKt$started$1"
     },
     {
       "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.LWJGLLogLevels"
@@ -604,7 +652,8 @@
     },
     {
       "type": "java.nio.DirectIntBufferU",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "unsafeAllocated": true
     },
     {
       "type": "java.nio.DirectLongBufferU",
@@ -651,6 +700,17 @@
             "java.lang.String",
             "java.lang.String"
           ]
+        }
+      ]
+    },
+    {
+      "type": "java.util.concurrent.ForkJoinTask",
+      "fields": [
+        {
+          "name": "aux"
+        },
+        {
+          "name": "status"
         }
       ]
     },
@@ -835,6 +895,9 @@
     },
     {
       "type": "javax.servlet.Servlet"
+    },
+    {
+      "type": "jdk.internal.misc.Unsafe"
     },
     {
       "type": "jdk.management.jfr.ConfigurationInfo"
@@ -2075,6 +2138,13 @@
       ]
     },
     {
+      "type": "org.lwjgl.glfw.GLFW",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "org.lwjgl.system.CallbackI"
+    },
+    {
       "type": "org.lwjgl.system.CustomBuffer",
       "fields": [
         {
@@ -2101,6 +2171,9 @@
           "name": "address"
         }
       ]
+    },
+    {
+      "type": "org.lwjgl.system.jemalloc.JEmallocAllocator"
     },
     {
       "type": "org.osgi.framework.FrameworkUtil"
@@ -2448,6 +2521,18 @@
           "name": "asList",
           "parameterTypes": [
             "java.lang.Object[]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.lwjgl.system.CallbackI",
+      "methods": [
+        {
+          "name": "callback",
+          "parameterTypes": [
+            "long",
+            "long"
           ]
         }
       ]

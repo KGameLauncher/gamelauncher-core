@@ -103,7 +103,17 @@ tasks {
         workingDir(rootProject.file("run"))
         doFirst { workingDir.mkdirs() }
         classpath(lwjglDev)
-        mainClass = lwjglLauncherMain
+        javaLauncher = project.javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(23)
+            vendor = JvmVendorSpec.GRAAL_VM
+        }
+        mainClass = lwjglMain
+        jvmArgs(lwjglDefaultDevArgs)
+        val configDir = project.file("src/graal/resources/META-INF/native-image/de.dasbabypixel.gamelauncher.lwjgl/generated").absolutePath
+        jvmArgs("-agentlib:native-image-agent=config-merge-dir=$configDir,config-write-period-secs=15")
+        standardInput = System.`in`
+        standardOutput = System.out
+        errorOutput = System.err
     }
 
     afterEvaluate {
