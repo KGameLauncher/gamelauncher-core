@@ -4,21 +4,33 @@ import de.dasbabypixel.gamelauncher.api.GameLauncher
 import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.concurrent.sleep
 import de.dasbabypixel.gamelauncher.api.util.function.GameConsumer
-import de.dasbabypixel.gamelauncher.api.util.function.GameRunnable
-import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.api.util.resource.AbstractGameResource
 import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWThread
 import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWWindow
-import org.jline.jansi.Ansi
+import org.jline.reader.LineReaderBuilder
+import org.jline.terminal.TerminalBuilder
 import java.util.concurrent.CompletableFuture
 import kotlin.concurrent.thread
 
 
-fun main() {
-    Logging.out.print(Ansi.ansi().eraseScreen())
-    Logging.out.flush()
-    GameLauncher.start()
+fun main(args: Array<String>) {
+    val terminal = TerminalBuilder.terminal()
+    val reader = LineReaderBuilder.builder().terminal(terminal).build()
+    println(terminal)
+    println(reader)
+    val line = reader.readLine()
+    println(line)
+//    Logging.out.print(Ansi.ansi().eraseScreen())
+//    Logging.out.flush()
+//    Logging.out.println("ää")
+//    Logging.out.println(Logging.out.charset())
+//    Logging.out.write("ää\n".toByteArray(Charset.defaultCharset()))
+//    Logging.out.write("ää\n".toByteArray(Charsets.UTF_8))
+//    Logging.out.println(System.getProperty("native.encoding"))
+//    Logging.out.println(System.getProperty("file.encoding"))
+//    System.getProperties().forEach { t, u -> println("$t: $u") }
+//    GameLauncher.start()
 }
 
 fun started() {
@@ -61,9 +73,9 @@ fun started() {
         it.hide().join()
         GameLauncher.stop()
     }
-    GLFWThread.submit(GameRunnable {
-        throw Exception("Test")
-    })
+//    GLFWThread.submit(GameRunnable {
+//        throw Exception("Test")
+//    })
     window.create()
     window.show()
 

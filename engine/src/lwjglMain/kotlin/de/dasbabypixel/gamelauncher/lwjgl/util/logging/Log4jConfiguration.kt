@@ -210,9 +210,6 @@ object Log4jConfiguration {
         LWJGLLogLevels.register()
         val configuration = createConfiguration(useAnsi, lineReader) as BuiltConfiguration
         Configurator.reconfigure(configuration)
-        Runtime.getRuntime().addShutdownHook(Thread {
-            LogManager.shutdown()
-        })
         System.setOut(LoggingPrintStream(LoggerFactory.getLogger("stdout")))
         System.setErr(LoggingPrintStream(LoggerFactory.getLogger("stderr")))
     }

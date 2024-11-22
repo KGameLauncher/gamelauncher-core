@@ -1,7 +1,9 @@
 package de.dasbabypixel.gamelauncher.api.lifecycle
 
+import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.api.util.resource.ResourceTracker
+import org.apache.logging.log4j.LogManager
 import kotlin.system.exitProcess
 
 actual class ShutdownLifecycleImplementation {
@@ -22,6 +24,8 @@ actual class ShutdownLifecycleImplementation {
 
     private fun shutdown(status: Int) {
         ResourceTracker.exit()
+        LogManager.shutdown()
+        Logging.out.println("Shutdown")
         exitProcess(status)
     }
 }

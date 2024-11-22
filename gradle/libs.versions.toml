@@ -1,11 +1,11 @@
 [versions]
-android-gradle-plugin = "8.6.1"
+android-gradle-plugin = "8.5.2"
 desugar_jdk_libs_nio = "2.1.2"
 kotlin = "2.0.21"
 androidx-appcompat = "1.7.0"
 slf4j = "2.0.16"
 log4j = "2.24.0"
-jline = "3.27.0"
+jline = "3.26.2"
 shadow = "8.3.2"
 disruptor = "4.0.0"
 junit = "5.11.1"

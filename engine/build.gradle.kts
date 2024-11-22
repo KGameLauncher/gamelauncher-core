@@ -1,4 +1,6 @@
+import de.dasbabypixel.gamelauncher.gradle.JvmArgumentGenerator
 import de.dasbabypixel.gamelauncher.gradle.lwjglDefaultDevArgs
+import de.dasbabypixel.gamelauncher.gradle.lwjglDefaultDevInitSystemProperties
 import de.dasbabypixel.gamelauncher.gradle.lwjglMain
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -8,11 +10,21 @@ plugins {
     `maven-publish`
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.graal.native)
+    alias(libs.plugins.android.library)
+}
+
+android {
+    namespace = "de.dasbabypixel.gamelauncher.android"
+    setCompileSdkVersion(34)
 }
 
 kotlin {
     jvmToolchain(23)
+//    jvm("lwjgl") {
+//    }
     jvm("lwjgl")
+    androidTarget("android") {
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
@@ -25,6 +37,7 @@ kotlin {
             }
         }
         commonTest {
+            resources.srcDir(file("src/lwjglTest/generatedres"))
             dependencies {
                 api(kotlin("test"))
             }
@@ -38,37 +51,65 @@ kotlin {
         named("lwjglMain") {
             dependsOn(commonImplMain.get())
             dependencies {
-                api(project.dependencies.platform("org.lwjgl:lwjgl-bom:${lwjgl.version}"))
-                api("org.lwjgl:lwjgl")
-                api("org.lwjgl:lwjgl-glfw")
-                api("org.lwjgl:lwjgl-opengl")
-                api("org.lwjgl:lwjgl-opengles")
-                api("org.lwjgl:lwjgl-stb")
+                api("org.lwjgl:lwjgl:${lwjgl.version}")
+                api("org.lwjgl:lwjgl-glfw:${lwjgl.version}")
+                api("org.lwjgl:lwjgl-opengl:${lwjgl.version}")
+                api("org.lwjgl:lwjgl-opengles:${lwjgl.version}")
+                api("org.lwjgl:lwjgl-stb:${lwjgl.version}")
 
-                runtimeOnly("org.lwjgl:lwjgl:${lwjgl.version}:${lwjgl.natives}")
-                runtimeOnly("org.lwjgl:lwjgl-glfw:${lwjgl.version}:${lwjgl.natives}")
-                runtimeOnly("org.lwjgl:lwjgl-opengl:${lwjgl.version}:${lwjgl.natives}")
-                runtimeOnly("org.lwjgl:lwjgl-opengles:${lwjgl.version}:${lwjgl.natives}")
-                runtimeOnly("org.lwjgl:lwjgl-stb:${lwjgl.version}:${lwjgl.natives}")
-
+                runtimeOnly("org.lwjgl:lwjgl:${lwjgl.version}:${lwjgl.natives}") {
+                    this.artifact {
+                        this.classifier = lwjgl.natives
+                    }
+                }
+                runtimeOnly("org.lwjgl:lwjgl-glfw:${lwjgl.version}:${lwjgl.natives}") {
+                    this.artifact {
+                        this.classifier = lwjgl.natives
+                    }
+                }
+                runtimeOnly("org.lwjgl:lwjgl-opengl:${lwjgl.version}:${lwjgl.natives}") {
+                    this.artifact {
+                        this.classifier = lwjgl.natives
+                    }
+                }
+                runtimeOnly("org.lwjgl:lwjgl-opengles:${lwjgl.version}:${lwjgl.natives}") {
+                    this.artifact {
+                        this.classifier = lwjgl.natives
+                    }
+                }
+                runtimeOnly("org.lwjgl:lwjgl-stb:${lwjgl.version}:${lwjgl.natives}") {
+                    this.artifact {
+                        this.classifier = lwjgl.natives
+                    }
+                }
 //    "graalImplementation"("org.graalvm.sdk:graal-sdk:24.1.0")
 //    "graalCompileOnly"(sourceSets.main.map { it.output })
 
-                implementation(libs.bundles.logging.runtime)
-                implementation(libs.bundles.jline)
+                api(libs.bundles.logging.runtime)
+                api(libs.bundles.jline)
             }
         }
         named("lwjglTest") {
             dependsOn(commonImplTest.get())
             dependencies {
-                implementation(libs.junit.jupiter.api)
-                runtimeOnly(libs.junit.jupiter.engine)
+                api(libs.junit.jupiter.api)
+                api(libs.junit.jupiter.engine)
             }
         }
+//        named("androidMain") {
+//            dependsOn(commonImplMain.get())
+//        }
     }
 }
 
 tasks {
+    val genDevInitSysProps = register<JvmArgumentGenerator>("genDevInitSysProps") {
+        arguments.addAll(lwjglDefaultDevInitSystemProperties.map { it.key + "=" + it.value })
+        outputFile.set(file("src/lwjglTest/generatedres/gamelauncher.sysprops"))
+    }
+    named("lwjglTestProcessResources") {
+        dependsOn(genDevInitSysProps)
+    }
     afterEvaluate {
         // Double afterEvaluate to ensure we overwrite everything in multiplatform.
         // One afterEvaluate was not enough
@@ -82,6 +123,10 @@ tasks {
                 workingDir(rootProject.mkdir("run"))
                 mainClass = lwjglMain
                 jvmArgs(lwjglDefaultDevArgs)
+                jvmArgs(lwjglDefaultDevInitSystemProperties.map { "-D" + it.key + "=" + it.value })
+                jvmArgs("-Dgamelauncher.skipsysprops=true")
+                val encoding = System.out.charset().name()
+                jvmArgs("-Dstdout.encoding=$encoding", "-Dstderr.encoding=$encoding")
                 standardInput = System.`in`
                 standardOutput = System.out
                 errorOutput = System.err

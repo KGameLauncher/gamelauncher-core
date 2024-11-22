@@ -44,9 +44,6 @@ graalvmNative {
             mainClass = lwjglMain
             runtimeArgs(lwjglDefaultDevArgs)
         }
-        forEach {
-            println(it.name)
-        }
     }
 }
 
@@ -56,6 +53,12 @@ tasks {
     }
     val genDevArgs = register<JvmArgumentGenerator>("genDevArgs") {
         arguments.addAll(lwjglDefaultDevArgs)
+    }
+    val genProdInitSysProps = register<JvmArgumentGenerator>("genProdInitSysProps") {
+        arguments.addAll(lwjglDefaultProdInitSystemProperties.map { it.key + "=" + it.value })
+    }
+    val genDevInitSysProps = register<JvmArgumentGenerator>("genDevInitSysProps") {
+        arguments.addAll(lwjglDefaultDevInitSystemProperties.map { it.key + "=" + it.value })
     }
     named("nativeBuild") { enabled = false }
     named("nativeCompile") { enabled = false }
@@ -70,6 +73,7 @@ tasks {
         archiveClassifier = "dev"
         configurations.add(project.configurations.getByName("launcherRuntimeClasspath"))
         from(genDevArgs) { rename { "gamelauncher.jvmargs" } }
+        from(genDevInitSysProps) { rename { "gamelauncher.sysprops" } }
         manifest {
             attributes["Main-Class"] = lwjglLauncherMain
         }
@@ -80,6 +84,7 @@ tasks {
         archiveClassifier = "prod"
         configurations.add(project.configurations.getByName("launcherRuntimeClasspath"))
         from(genProdArgs) { rename { "gamelauncher.jvmargs" } }
+        from(genProdInitSysProps) { rename { "gamelauncher.sysprops" } }
         manifest {
             attributes["Main-Class"] = lwjglLauncherMain
         }
@@ -109,7 +114,8 @@ tasks {
         }
         mainClass = lwjglMain
         jvmArgs(lwjglDefaultDevArgs)
-        val configDir = project.file("src/graal/resources/META-INF/native-image/de.dasbabypixel.gamelauncher.lwjgl/generated").absolutePath
+        val configDir =
+            project.file("src/graal/resources/META-INF/native-image/de.dasbabypixel.gamelauncher.lwjgl/generated").absolutePath
         jvmArgs("-agentlib:native-image-agent=config-merge-dir=$configDir,config-write-period-secs=15")
         standardInput = System.`in`
         standardOutput = System.out

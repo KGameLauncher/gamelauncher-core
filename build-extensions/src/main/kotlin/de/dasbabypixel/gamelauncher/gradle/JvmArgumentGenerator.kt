@@ -16,7 +16,7 @@ abstract class JvmArgumentGenerator : DefaultTask() {
     val outputFile: RegularFileProperty = project.objects.fileProperty()
 
     init {
-        outputFile.convention { temporaryDir.resolve("gamelauncher.jvmargs") }
+        outputFile.convention { temporaryDir.resolve("output") }
     }
 
     @TaskAction

@@ -6,13 +6,16 @@ import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.concurrent.sleep
 import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
+import org.jline.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
+import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
 import java.lang.management.ManagementFactory
 import java.nio.charset.Charset
+import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.concurrent.thread
@@ -20,6 +23,8 @@ import kotlin.concurrent.thread
 class LWJGLLogging {
     companion object {
         fun init() {
+//            var line = System.`in`.bufferedReader().readLine()
+//            Logging.out.println("Readline $line")
             val useAnsi = Config.USE_ANSI.value
             Logger.getLogger("org.jline").level = Level.ALL
 
@@ -27,13 +32,31 @@ class LWJGLLogging {
             runtime.inputArguments.forEach {
                 println(it)
             }
+            
+            Logging.out.println(System.getProperty("jdk.console"))
+            Logging.out.println(System.console())
+            val cls = Class.forName("jdk.internal.io.JdkConsoleProvider")
+            ServiceLoader.load(ModuleLayer.boot(), cls).forEach {
+                println(it)
+            }
 
             var requestExit = false
-            val terminal = TerminalBuilder.builder().system(true).signalHandler {
-                Logging.out.println("Receive signal ${it.name} - ${it.ordinal}")
-                requestExit = true
-            }.ffm(true).apply { if (Debug.inIde) dumb(true) }
-                .encoding(System.console()?.charset() ?: Charset.defaultCharset()).build()
+            val console = System.console()
+            val terminal: Terminal
+            if (console != null) {
+                terminal = TerminalBuilder.builder().signalHandler {
+                    Logging.out.println("Receive signal ${it.name} - ${it.ordinal}")
+                    requestExit = true
+                }.ffm(true).apply {
+                    if (Debug.inIde) dumb(true).system(true)
+                    else system(true)
+                    System.console()
+                }.encoding(System.console()?.charset() ?: Charset.defaultCharset()).build()
+            } else {
+                AnsiConsole.systemInstall()
+                terminal = AnsiConsole.getTerminal()
+            }
+
             val reader = LineReaderBuilder.builder().appName("GameLauncher").terminal(terminal).build()
             Log4jConfiguration.setup(useAnsi, reader)
             reader.option(LineReader.Option.AUTO_GROUP, false)
@@ -47,6 +70,14 @@ class LWJGLLogging {
             reader.variable(LineReader.HISTORY_SIZE, 500)
             reader.variable(LineReader.HISTORY_FILE_SIZE, 2500)
             reader.variable(LineReader.COMPLETION_STYLE_LIST_BACKGROUND, "inverse")
+            Logging.out.println(terminal)
+            Logging.out.println("111")
+            Logging.out.println(reader.terminal)
+//            val line = System.`in`.bufferedReader().readLine()
+//            Logging.out.println("Readline $line")
+            val line = reader.readLine()
+            Logging.out.println("Read $line")
+
 
             val logger = getLogger<LWJGLLogging>()
             thread(name = "Console Thread") {

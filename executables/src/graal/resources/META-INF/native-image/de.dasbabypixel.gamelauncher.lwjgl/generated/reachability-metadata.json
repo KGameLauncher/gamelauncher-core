@@ -1,36 +1,6 @@
 {
   "reflection": [
     {
-      "type": "[B"
-    },
-    {
-      "type": "[C"
-    },
-    {
-      "type": "[D"
-    },
-    {
-      "type": "[F"
-    },
-    {
-      "type": "[I"
-    },
-    {
-      "type": "[J"
-    },
-    {
-      "type": "[Ljava.lang.Object;"
-    },
-    {
-      "type": "[Ljava.lang.String;"
-    },
-    {
-      "type": "[Ljava.rmi.server.ObjID;"
-    },
-    {
-      "type": "[Ljavax.management.openmbean.CompositeData;"
-    },
-    {
       "type": "[Lorg.apache.logging.log4j.core.Appender;"
     },
     {
@@ -41,12 +11,6 @@
     },
     {
       "type": "[Lorg.apache.logging.log4j.core.config.Property;"
-    },
-    {
-      "type": "[S"
-    },
-    {
-      "type": "[Z"
     },
     {
       "type": "android.os.Build$VERSION"
@@ -87,42 +51,6 @@
           ]
         }
       ]
-    },
-    {
-      "type": "com.sun.management.GarbageCollectorMXBean"
-    },
-    {
-      "type": "com.sun.management.GcInfo"
-    },
-    {
-      "type": "com.sun.management.HotSpotDiagnosticMXBean"
-    },
-    {
-      "type": "com.sun.management.OperatingSystemMXBean",
-      "methods": [
-        {
-          "name": "getProcessCpuTime",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.sun.management.ThreadMXBean"
-    },
-    {
-      "type": "com.sun.management.VMOption"
-    },
-    {
-      "type": "com.sun.management.internal.GarbageCollectorExtImpl"
-    },
-    {
-      "type": "com.sun.management.internal.HotSpotDiagnostic"
-    },
-    {
-      "type": "com.sun.management.internal.HotSpotThreadImpl"
-    },
-    {
-      "type": "com.sun.management.internal.OperatingSystemImpl"
     },
     {
       "type": "de.dasbabypixel.gamelauncher.api.GameLauncher$Companion"
@@ -167,78 +95,6 @@
       "type": "de.dasbabypixel.gamelauncher.lwjgl.MainKt$started$1"
     },
     {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.LWJGLLogLevels"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.LWJGLLogging"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.LWJGLLogging$Companion"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.LWJGLPatternProvider"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jConfiguration"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jConfiguration$1"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jConfiguration$1$createInstance$1"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Exception"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Highlight"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Level"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Location"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Logger"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Marker"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Msg"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Newline"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Style"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Thread"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Serializer$Time"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$State"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Styles"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Styles$Highlight"
-    },
-    {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.Log4jPatternSerializer$Styles$Style"
-    },
-    {
       "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.TerminalConsoleAppender",
       "methods": [
         {
@@ -252,167 +108,14 @@
       "allDeclaredFields": true
     },
     {
-      "type": "de.dasbabypixel.gamelauncher.lwjgl.util.logging.TerminalConsoleAppender$Companion"
-    },
-    {
       "type": "jakarta.servlet.Servlet"
-    },
-    {
-      "type": "java.lang.AutoCloseable"
-    },
-    {
-      "type": "java.lang.Boolean",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Byte",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Character",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Deprecated"
-    },
-    {
-      "type": "java.lang.Double",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Float",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Integer",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Long",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Number"
     },
     {
       "type": "java.lang.Object",
       "allDeclaredFields": true
     },
     {
-      "type": "java.lang.ProcessBuilder$RedirectPipeImpl",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.ProcessHandle",
-      "methods": [
-        {
-          "name": "current",
-          "parameterTypes": []
-        },
-        {
-          "name": "info",
-          "parameterTypes": []
-        },
-        {
-          "name": "parent",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.ProcessHandle$Info",
-      "methods": [
-        {
-          "name": "command",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.Short",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.StackTraceElement",
-      "methods": [
-        {
-          "name": "getClassLoaderName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getClassName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getFileName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLineNumber",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMethodName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getModuleName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getModuleVersion",
-          "parameterTypes": []
-        },
-        {
-          "name": "isNativeMethod",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.String",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
+      "type": "java.lang.ProcessBuilder$RedirectPipeImpl"
     },
     {
       "type": "java.lang.Thread",
@@ -421,209 +124,6 @@
           "name": "threadLocalRandomProbe"
         }
       ]
-    },
-    {
-      "type": "java.lang.Void",
-      "fields": [
-        {
-          "name": "TYPE"
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.BufferPoolMXBean"
-    },
-    {
-      "type": "java.lang.management.ClassLoadingMXBean"
-    },
-    {
-      "type": "java.lang.management.CompilationMXBean"
-    },
-    {
-      "type": "java.lang.management.GarbageCollectorMXBean",
-      "methods": [
-        {
-          "name": "getCollectionTime",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.LockInfo",
-      "methods": [
-        {
-          "name": "getClassName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getIdentityHashCode",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.ManagementPermission",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.MemoryMXBean"
-    },
-    {
-      "type": "java.lang.management.MemoryManagerMXBean"
-    },
-    {
-      "type": "java.lang.management.MemoryPoolMXBean"
-    },
-    {
-      "type": "java.lang.management.MemoryUsage"
-    },
-    {
-      "type": "java.lang.management.MonitorInfo"
-    },
-    {
-      "type": "java.lang.management.OperatingSystemMXBean",
-      "methods": [
-        {
-          "name": "getAvailableProcessors",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.PlatformLoggingMXBean"
-    },
-    {
-      "type": "java.lang.management.RuntimeMXBean"
-    },
-    {
-      "type": "java.lang.management.ThreadInfo",
-      "methods": [
-        {
-          "name": "getBlockedCount",
-          "parameterTypes": []
-        },
-        {
-          "name": "getBlockedTime",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockInfo",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockOwnerId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockOwnerName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockedMonitors",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLockedSynchronizers",
-          "parameterTypes": []
-        },
-        {
-          "name": "getPriority",
-          "parameterTypes": []
-        },
-        {
-          "name": "getStackTrace",
-          "parameterTypes": []
-        },
-        {
-          "name": "getThreadId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getThreadName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getThreadState",
-          "parameterTypes": []
-        },
-        {
-          "name": "getWaitedCount",
-          "parameterTypes": []
-        },
-        {
-          "name": "getWaitedTime",
-          "parameterTypes": []
-        },
-        {
-          "name": "isDaemon",
-          "parameterTypes": []
-        },
-        {
-          "name": "isInNative",
-          "parameterTypes": []
-        },
-        {
-          "name": "isSuspended",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.lang.management.ThreadMXBean",
-      "methods": [
-        {
-          "name": "findDeadlockedThreads",
-          "parameterTypes": []
-        },
-        {
-          "name": "getAllThreadIds",
-          "parameterTypes": []
-        },
-        {
-          "name": "getDaemonThreadCount",
-          "parameterTypes": []
-        },
-        {
-          "name": "getThreadCount",
-          "parameterTypes": []
-        },
-        {
-          "name": "getThreadInfo",
-          "parameterTypes": [
-            "long"
-          ]
-        },
-        {
-          "name": "getThreadInfo",
-          "parameterTypes": [
-            "long[]"
-          ]
-        },
-        {
-          "name": "getThreadInfo",
-          "parameterTypes": [
-            "long[]",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.math.BigDecimal"
-    },
-    {
-      "type": "java.math.BigInteger"
     },
     {
       "type": "java.nio.Buffer",
@@ -668,40 +168,10 @@
       "allDeclaredFields": true
     },
     {
-      "type": "java.rmi.MarshalledObject"
-    },
-    {
-      "type": "java.rmi.dgc.Lease"
-    },
-    {
-      "type": "java.rmi.dgc.VMID"
-    },
-    {
-      "type": "java.rmi.server.ObjID"
-    },
-    {
-      "type": "java.rmi.server.UID"
-    },
-    {
       "type": "java.sql.Date"
     },
     {
       "type": "java.sql.Time"
-    },
-    {
-      "type": "java.util.Date"
-    },
-    {
-      "type": "java.util.PropertyPermission",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        }
-      ]
     },
     {
       "type": "java.util.concurrent.ForkJoinTask",
@@ -723,14 +193,6 @@
       ]
     },
     {
-      "type": "java.util.concurrent.atomic.AtomicReference",
-      "fields": [
-        {
-          "name": "value"
-        }
-      ]
-    },
-    {
       "type": "java.util.concurrent.atomic.Striped64",
       "fields": [
         {
@@ -742,180 +204,10 @@
       ]
     },
     {
-      "type": "java.util.logging.LogManager",
-      "methods": [
-        {
-          "name": "getLoggingMXBean",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.util.logging.LoggingMXBean"
-    },
-    {
-      "type": "javax.management.MBeanOperationInfo"
-    },
-    {
-      "type": "javax.management.MBeanServerBuilder",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "javax.management.NotificationEmitter"
-    },
-    {
-      "type": "javax.management.ObjectName"
-    },
-    {
-      "type": "javax.management.StandardEmitterMBean"
-    },
-    {
-      "type": "javax.management.openmbean.CompositeData"
-    },
-    {
-      "type": "javax.management.openmbean.OpenMBeanOperationInfoSupport"
-    },
-    {
-      "type": "javax.management.openmbean.TabularData"
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIConnection",
-      "methods": [
-        {
-          "name": "getAttribute",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "java.lang.String",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "getAttributes",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "java.lang.String[]",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "getConnectionId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getDefaultDomain",
-          "parameterTypes": [
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "getMBeanInfo",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "invoke",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "java.lang.String",
-            "java.rmi.MarshalledObject",
-            "java.lang.String[]",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "isInstanceOf",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "java.lang.String",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "isRegistered",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "javax.security.auth.Subject"
-          ]
-        },
-        {
-          "name": "queryNames",
-          "parameterTypes": [
-            "javax.management.ObjectName",
-            "java.rmi.MarshalledObject",
-            "javax.security.auth.Subject"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIConnectionImpl_Skel"
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIConnectionImpl_Stub",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.rmi.server.RemoteRef"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIServer",
-      "methods": [
-        {
-          "name": "newClient",
-          "parameterTypes": [
-            "java.lang.Object"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIServerImpl_Skel"
-    },
-    {
-      "type": "javax.management.remote.rmi.RMIServerImpl_Stub",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.rmi.server.RemoteRef"
-          ]
-        }
-      ]
-    },
-    {
       "type": "javax.servlet.Servlet"
     },
     {
       "type": "jdk.internal.misc.Unsafe"
-    },
-    {
-      "type": "jdk.management.jfr.ConfigurationInfo"
-    },
-    {
-      "type": "jdk.management.jfr.EventTypeInfo"
-    },
-    {
-      "type": "jdk.management.jfr.FlightRecorderMXBean"
-    },
-    {
-      "type": "jdk.management.jfr.FlightRecorderMXBeanImpl"
-    },
-    {
-      "type": "jdk.management.jfr.RecordingInfo"
-    },
-    {
-      "type": "jdk.management.jfr.SettingDescriptorInfo"
     },
     {
       "type": "kotlin.reflect.jvm.internal.ReflectionFactoryImpl"
@@ -2179,111 +1471,11 @@
       "type": "org.osgi.framework.FrameworkUtil"
     },
     {
-      "type": "sun.management.ClassLoadingImpl"
-    },
-    {
-      "type": "sun.management.CompilationImpl"
-    },
-    {
-      "type": "sun.management.ManagementFactoryHelper$1"
-    },
-    {
-      "type": "sun.management.ManagementFactoryHelper$PlatformLoggingImpl"
-    },
-    {
-      "type": "sun.management.MemoryImpl"
-    },
-    {
-      "type": "sun.management.MemoryManagerImpl"
-    },
-    {
-      "type": "sun.management.MemoryPoolImpl"
-    },
-    {
-      "type": "sun.management.RuntimeImpl"
-    },
-    {
-      "type": "sun.misc.Signal",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "handle",
-          "parameterTypes": [
-            "sun.misc.Signal",
-            "sun.misc.SignalHandler"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.misc.SignalHandler",
-      "fields": [
-        {
-          "name": "SIG_DFL"
-        },
-        {
-          "name": "SIG_IGN"
-        }
-      ]
-    },
-    {
       "type": "sun.misc.Unsafe",
       "allDeclaredFields": true
     },
     {
       "type": "sun.reflect.Reflection"
-    },
-    {
-      "type": "sun.reflect.misc.Trampoline",
-      "methods": [
-        {
-          "name": "invoke",
-          "parameterTypes": [
-            "java.lang.reflect.Method",
-            "java.lang.Object",
-            "java.lang.Object[]"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.rmi.registry.RegistryImpl_Stub"
-    },
-    {
-      "type": "sun.rmi.transport.DGCImpl_Skel",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "sun.rmi.transport.DGCImpl_Stub",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.rmi.server.RemoteRef"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.security.provider.DRBG",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.security.SecureRandomParameters"
-          ]
-        }
-      ]
     },
     {
       "type": "sun.security.provider.SHA",
@@ -2293,183 +1485,172 @@
           "parameterTypes": []
         }
       ]
-    },
-    {
-      "type": "sun.security.provider.SHA2$SHA256",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": {
-        "proxy": [
-          "sun.misc.SignalHandler"
-        ]
-      }
     }
   ],
-  "serialization": [
+  "resources": [
     {
-      "type": "byte[]"
+      "glob": "META-INF/MANIFEST.MF"
     },
     {
-      "type": "java.lang.Boolean"
+      "glob": "META-INF/log4j-provider.properties"
     },
     {
-      "type": "java.lang.Integer"
+      "glob": "META-INF/maven/org.jline/jline-native/pom.properties"
     },
     {
-      "type": "java.lang.Long"
+      "glob": "META-INF/org/apache/logging/log4j/core/config/plugins/Log4j2Plugins.dat"
     },
     {
-      "type": "java.lang.Number"
+      "glob": "META-INF/services/java.lang.System$LoggerFinder"
     },
     {
-      "type": "java.lang.Object[]"
+      "glob": "META-INF/services/java.net.spi.InetAddressResolverProvider"
     },
     {
-      "type": "java.lang.String"
+      "glob": "META-INF/services/java.time.zone.ZoneRulesProvider"
     },
     {
-      "type": "java.rmi.MarshalledObject"
+      "glob": "META-INF/services/org.apache.logging.log4j.core.util.ContextDataProvider"
     },
     {
-      "type": "java.rmi.dgc.Lease"
+      "glob": "META-INF/services/org.apache.logging.log4j.core.util.WatchEventService"
     },
     {
-      "type": "java.rmi.dgc.VMID"
+      "glob": "META-INF/services/org.apache.logging.log4j.spi.Provider"
     },
     {
-      "type": "java.rmi.server.ObjID"
+      "glob": "META-INF/services/org.apache.logging.log4j.util.PropertySource"
     },
     {
-      "type": "java.rmi.server.ObjID[]"
+      "glob": "META-INF/services/org.slf4j.spi.SLF4JServiceProvider"
     },
     {
-      "type": "java.rmi.server.RemoteObject"
+      "glob": "META-INF/services/org/jline/terminal/provider/exec"
     },
     {
-      "type": "java.rmi.server.RemoteStub"
+      "glob": "META-INF/services/org/jline/terminal/provider/ffm"
     },
     {
-      "type": "java.rmi.server.UID"
+      "glob": "META-INF/services/org/jline/terminal/provider/jansi"
     },
     {
-      "type": "java.util.ArrayList"
+      "glob": "META-INF/services/org/jline/terminal/provider/jna"
     },
     {
-      "type": "java.util.HashSet"
+      "glob": "META-INF/services/org/jline/terminal/provider/jni"
     },
     {
-      "type": "java.util.TreeMap"
+      "glob": "META-INF/windows/x64/org/lwjgl/glfw/glfw.dll.sha1"
     },
     {
-      "type": "javax.management.Attribute"
+      "glob": "META-INF/windows/x64/org/lwjgl/lwjgl.dll.sha1"
     },
     {
-      "type": "javax.management.AttributeList"
+      "glob": "gamelauncher.sysprops"
     },
     {
-      "type": "javax.management.MBeanAttributeInfo"
+      "glob": "log4j2-test.jsn"
     },
     {
-      "type": "javax.management.MBeanAttributeInfo[]"
+      "glob": "log4j2-test.json"
     },
     {
-      "type": "javax.management.MBeanConstructorInfo[]"
+      "glob": "log4j2-test.properties"
     },
     {
-      "type": "javax.management.MBeanFeatureInfo"
+      "glob": "log4j2-test.xml"
     },
     {
-      "type": "javax.management.MBeanInfo"
+      "glob": "log4j2-test.yaml"
     },
     {
-      "type": "javax.management.MBeanNotificationInfo[]"
+      "glob": "log4j2-test.yml"
     },
     {
-      "type": "javax.management.MBeanOperationInfo[]"
+      "glob": "log4j2-testDefault.jsn"
     },
     {
-      "type": "javax.management.ObjectName"
+      "glob": "log4j2-testDefault.json"
     },
     {
-      "type": "javax.management.openmbean.ArrayType"
+      "glob": "log4j2-testDefault.properties"
     },
     {
-      "type": "javax.management.openmbean.CompositeDataSupport"
+      "glob": "log4j2-testDefault.xml"
     },
     {
-      "type": "javax.management.openmbean.CompositeData[]"
+      "glob": "log4j2-testDefault.yaml"
     },
     {
-      "type": "javax.management.openmbean.CompositeType"
+      "glob": "log4j2-testDefault.yml"
     },
     {
-      "type": "javax.management.openmbean.OpenMBeanAttributeInfoSupport"
+      "glob": "log4j2.StatusLogger.properties"
     },
     {
-      "type": "javax.management.openmbean.OpenType"
+      "glob": "log4j2.component.properties"
     },
     {
-      "type": "javax.management.openmbean.SimpleType"
+      "glob": "log4j2.jsn"
     },
     {
-      "type": "javax.management.remote.rmi.RMIConnectionImpl_Stub"
+      "glob": "log4j2.json"
     },
     {
-      "type": "javax.management.remote.rmi.RMIServerImpl_Stub"
+      "glob": "log4j2.properties"
     },
     {
-      "type": "long[]"
+      "glob": "log4j2.system.properties"
+    },
+    {
+      "glob": "log4j2.xml"
+    },
+    {
+      "glob": "log4j2.yaml"
+    },
+    {
+      "glob": "log4j2.yml"
+    },
+    {
+      "glob": "log4j2Default.jsn"
+    },
+    {
+      "glob": "log4j2Default.json"
+    },
+    {
+      "glob": "log4j2Default.properties"
+    },
+    {
+      "glob": "log4j2Default.xml"
+    },
+    {
+      "glob": "log4j2Default.yaml"
+    },
+    {
+      "glob": "log4j2Default.yml"
+    },
+    {
+      "glob": "org/jline/nativ/Windows/x86_64/jlinenative.dll"
+    },
+    {
+      "glob": "org/jline/utils/capabilities.txt"
+    },
+    {
+      "glob": "org/jline/utils/dumb.caps"
+    },
+    {
+      "glob": "org/lwjgl/Version.class"
+    },
+    {
+      "glob": "windows/x64/org/lwjgl/glfw/glfw.dll"
+    },
+    {
+      "glob": "windows/x64/org/lwjgl/lwjgl.dll"
     }
   ],
+  
+  "bundles": [],
   "jni": [
-    {
-      "type": "[Lcom.sun.management.internal.DiagnosticCommandArgumentInfo;"
-    },
-    {
-      "type": "[Lcom.sun.management.internal.DiagnosticCommandInfo;"
-    },
-    {
-      "type": "com.sun.management.internal.DiagnosticCommandArgumentInfo",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "boolean",
-            "boolean",
-            "boolean",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.sun.management.internal.DiagnosticCommandInfo",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "boolean",
-            "java.util.List"
-          ]
-        }
-      ]
-    },
     {
       "type": "de.dasbabypixel.gamelauncher.lwjgl.MainKt",
       "methods": [
@@ -2511,17 +1692,6 @@
       "fields": [
         {
           "name": "initialized"
-        }
-      ]
-    },
-    {
-      "type": "java.util.Arrays",
-      "methods": [
-        {
-          "name": "asList",
-          "parameterTypes": [
-            "java.lang.Object[]"
-          ]
         }
       ]
     },
