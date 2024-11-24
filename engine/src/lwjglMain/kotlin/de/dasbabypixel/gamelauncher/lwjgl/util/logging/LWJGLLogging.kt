@@ -23,22 +23,8 @@ import kotlin.concurrent.thread
 class LWJGLLogging {
     companion object {
         fun init() {
-//            var line = System.`in`.bufferedReader().readLine()
-//            Logging.out.println("Readline $line")
             val useAnsi = Config.USE_ANSI.value
             Logger.getLogger("org.jline").level = Level.ALL
-
-            val runtime = ManagementFactory.getRuntimeMXBean()
-            runtime.inputArguments.forEach {
-                println(it)
-            }
-            
-            Logging.out.println(System.getProperty("jdk.console"))
-            Logging.out.println(System.console())
-            val cls = Class.forName("jdk.internal.io.JdkConsoleProvider")
-            ServiceLoader.load(ModuleLayer.boot(), cls).forEach {
-                println(it)
-            }
 
             var requestExit = false
             val console = System.console()
@@ -51,10 +37,9 @@ class LWJGLLogging {
                     if (Debug.inIde) dumb(true).system(true)
                     else system(true)
                     System.console()
-                }.encoding(System.console()?.charset() ?: Charset.defaultCharset()).build()
+                }.encoding(System.console()?.charset() ?: Logging.out.charset()).build()
             } else {
-                AnsiConsole.systemInstall()
-                terminal = AnsiConsole.getTerminal()
+                terminal = TerminalBuilder.builder().dumb(true).system(true).encoding(Logging.out.charset()).build()
             }
 
             val reader = LineReaderBuilder.builder().appName("GameLauncher").terminal(terminal).build()
@@ -70,14 +55,6 @@ class LWJGLLogging {
             reader.variable(LineReader.HISTORY_SIZE, 500)
             reader.variable(LineReader.HISTORY_FILE_SIZE, 2500)
             reader.variable(LineReader.COMPLETION_STYLE_LIST_BACKGROUND, "inverse")
-            Logging.out.println(terminal)
-            Logging.out.println("111")
-            Logging.out.println(reader.terminal)
-//            val line = System.`in`.bufferedReader().readLine()
-//            Logging.out.println("Readline $line")
-            val line = reader.readLine()
-            Logging.out.println("Read $line")
-
 
             val logger = getLogger<LWJGLLogging>()
             thread(name = "Console Thread") {
@@ -99,6 +76,10 @@ class LWJGLLogging {
                     }
                 }
             }
+        }
+
+        fun exit() {
+            Log4jConfiguration.exit()
         }
     }
 }

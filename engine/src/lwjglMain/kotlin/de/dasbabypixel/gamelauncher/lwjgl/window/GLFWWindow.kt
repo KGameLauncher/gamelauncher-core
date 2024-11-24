@@ -103,7 +103,7 @@ class GLFWWindow : Window {
             glfwId = glfwCreateWindow(startWidth, startHeight, "GameLauncher", 0, 0)
             if (glfwId == 0L) glfwError()
 
-            glfwSetWindowSizeLimits(glfwId, 1, 1, 1000000, 1000000)
+            glfwSetWindowSizeLimits(glfwId, 1, 1, GLFW_DONT_CARE, GLFW_DONT_CARE)
 
             glfwSetWindowCloseCallback(glfwId) {
                 val cb = requestCloseCallback ?: return@glfwSetWindowCloseCallback
@@ -112,6 +112,9 @@ class GLFWWindow : Window {
                 } catch (t: Throwable) {
                     GameLauncher.handleException(t)
                 }
+            }
+            glfwSetWindowRefreshCallback(glfwId) {
+                println("Redraw")
             }
         }
     }

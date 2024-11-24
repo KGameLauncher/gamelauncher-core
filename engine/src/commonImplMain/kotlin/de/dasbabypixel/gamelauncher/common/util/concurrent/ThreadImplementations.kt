@@ -97,7 +97,7 @@ abstract class CommonAbstractThread : AbstractGameResource, Thread {
 
     final override fun start() {
         threadImpl.start()
-        logger.info("Started thread")
+        logger.info("Started thread $name[${group.name}]")
         track()
     }
 

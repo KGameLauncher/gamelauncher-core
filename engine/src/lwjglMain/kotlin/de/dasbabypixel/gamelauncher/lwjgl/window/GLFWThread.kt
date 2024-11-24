@@ -44,12 +44,12 @@ object GLFWThread : AbstractExecutorThread(glThreadGroup, "GLFW-Thread") {
 
     override fun waitForSignal() {
         let {
-            if (hasWorkBool.get()) {
+            if (hasWorkBool.compareAndSet(true, false)) {
                 return // Work already scheduled, return
             } else if (!initialized) {
                 lock.lock()
                 try {
-                    if (hasWorkBool.get()) return // Work scheduled, await can cause deadlock
+                    if (hasWorkBool.compareAndSet(true, false)) return // Work scheduled, await can cause deadlock
                     if (initialized) { // Could have been changed, now we are inside lock - recheck
                         return@let
                     }
@@ -57,8 +57,8 @@ object GLFWThread : AbstractExecutorThread(glThreadGroup, "GLFW-Thread") {
                 } finally {
                     lock.unlock()
                 }
-                return
-            } else return@let
+                return // Initialization not yet done, return
+            }
         }
         glfwWaitEvents()
     }

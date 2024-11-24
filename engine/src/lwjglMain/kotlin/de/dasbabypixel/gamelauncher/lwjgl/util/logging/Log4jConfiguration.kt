@@ -213,6 +213,11 @@ object Log4jConfiguration {
         System.setOut(LoggingPrintStream(LoggerFactory.getLogger("stdout")))
         System.setErr(LoggingPrintStream(LoggerFactory.getLogger("stderr")))
     }
+
+    fun exit() {
+        System.setOut(Logging.out)
+        System.setErr(Logging.err)
+    }
 }
 
 object LWJGLLogLevels {

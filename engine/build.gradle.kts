@@ -125,8 +125,7 @@ tasks {
                 jvmArgs(lwjglDefaultDevArgs)
                 jvmArgs(lwjglDefaultDevInitSystemProperties.map { "-D" + it.key + "=" + it.value })
                 jvmArgs("-Dgamelauncher.skipsysprops=true")
-                val encoding = System.out.charset().name()
-                jvmArgs("-Dstdout.encoding=$encoding", "-Dstderr.encoding=$encoding")
+                jvmArgs("-Dstdout.encoding=${System.out.charset().name()}", "-Dstderr.encoding=${System.err.charset().name()}")
                 standardInput = System.`in`
                 standardOutput = System.out
                 errorOutput = System.err

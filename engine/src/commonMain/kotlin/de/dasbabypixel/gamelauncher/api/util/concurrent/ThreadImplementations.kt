@@ -12,6 +12,7 @@ import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.locks.ReentrantLock
+import java.lang.Thread as JThread
 
 expect abstract class AbstractThread : AbstractGameResource, Thread {
     constructor(group: ThreadGroup)
@@ -38,9 +39,11 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     private val ringBuffer: RingBuffer<QueueEntry<out Any>> =
         RingBuffer.createMultiProducer(::QueueEntry, 1024, SleepingWaitStrategy())
     private val poller = ringBuffer.newPoller()
+    private val exitFuture = CompletableFuture<Unit>()
 
     @Volatile
     private var exit = false
+    private var exitComplete = false
     protected val lock = ReentrantLock()
     protected val count = AtomicInteger(0)
     protected val hasWork = lock.newCondition()
@@ -68,14 +71,22 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
             while (!shouldExit()) {
                 loop()
             }
-            workQueue()
-            workExecution()
-            stopExecuting()
+            if (exitComplete) return
+            completeExit()
         } catch (t: Throwable) {
             logger.error("Exception in thread {}", thread.name, t)
         } finally {
             logger.debug("Stopping $name")
+            exitFuture.complete(Unit)
         }
+    }
+
+    private fun completeExit() {
+        exitComplete = true
+        workQueue()
+        workExecution()
+        stopExecuting()
+        exitFuture.complete(Unit)
     }
 
     private fun loop() {
@@ -129,13 +140,16 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
         return fut
     }
 
-    fun exit(): CompletableFuture<Unit>? {
+    private fun exit(): CompletableFuture<Unit> {
+        if (currentThread() == this) {
+            throw Error("GLFW-Thread may not be cleaned up itself. Spawn another thread, or better use the intented shutdown behaviour!")
+        }
         exit = true
         signal()
-        return null
+        return exitFuture
     }
 
-    final override fun cleanup0(): CompletableFuture<Unit>? = exit()
+    final override fun cleanup0(): CompletableFuture<Unit> = exit()
 
     protected open fun shouldExit(): Boolean {
         return exit
