@@ -110,11 +110,15 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     protected open fun waitForSignal() {
         try {
             lock.lock()
-            while (!hasWorkBool.compareAndSet(true, false)) {
-                hasWork.awaitUninterruptibly()
-            }
+            awaitWork()
         } finally {
             lock.unlock()
+        }
+    }
+
+    protected open fun awaitWork() {
+        while (!hasWorkBool.compareAndSet(true, false)) {
+            hasWork.awaitUninterruptibly()
         }
     }
 

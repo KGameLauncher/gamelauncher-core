@@ -32,6 +32,7 @@ fun started() {
 //        throw Exception("Test")
 //    })
     window.create()
+    window.renderThread.start()
     window.show()
 }
 
