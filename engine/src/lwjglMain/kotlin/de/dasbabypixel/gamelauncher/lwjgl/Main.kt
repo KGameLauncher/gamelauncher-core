@@ -8,13 +8,19 @@ import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
 import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWThread
 import de.dasbabypixel.gamelauncher.lwjgl.window.GLFWWindow
 import org.jline.jansi.Ansi
+import kotlin.concurrent.thread
 
 
 fun main(args: Array<String>) {
     Logging.out.print(Ansi.ansi().eraseScreen())
     Logging.out.flush()
+    thread(isDaemon = true, priority = Thread.MAX_PRIORITY) {
+        Thread.sleep(9223372036854775783)
+    }
     GameLauncher.start()
 }
+
+var window: GLFWWindow? = null
 
 fun started() {
 
@@ -24,6 +30,7 @@ fun started() {
     GLFWThread.startThread()
 
     val window = GLFWWindow(null)
+    de.dasbabypixel.gamelauncher.lwjgl.window = window
     window.requestCloseCallback = GameConsumer {
         it.hide().join()
         GameLauncher.stop()
@@ -37,6 +44,7 @@ fun started() {
 }
 
 fun stopped() {
+    window!!.renderThread.cleanup().join()
     GLFWThread.cleanup().join()
 }
 

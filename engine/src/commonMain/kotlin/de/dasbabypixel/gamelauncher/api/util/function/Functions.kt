@@ -17,6 +17,11 @@ fun interface GameConsumer<T> {
     fun accept(value: T)
 }
 
+fun interface GameBiConsumer<T, V> {
+    @Throws(GameException::class)
+    fun accept(t: T, v: V)
+}
+
 fun interface GameSupplier<T> {
     @Throws(GameException::class)
     fun get(): T

@@ -6,16 +6,12 @@ import de.dasbabypixel.gamelauncher.api.util.Debug
 import de.dasbabypixel.gamelauncher.api.util.concurrent.sleep
 import de.dasbabypixel.gamelauncher.api.util.logging.Logging
 import de.dasbabypixel.gamelauncher.api.util.logging.getLogger
-import org.jline.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
 import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
-import java.lang.management.ManagementFactory
-import java.nio.charset.Charset
-import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.concurrent.thread
@@ -29,17 +25,19 @@ class LWJGLLogging {
             var requestExit = false
             val console = System.console()
             val terminal: Terminal
+            // We always make sure to disable "exec" provider. It causes issues with "the pipe is being closed" when reading from stdin
             if (console != null) {
                 terminal = TerminalBuilder.builder().signalHandler {
                     Logging.out.println("Receive signal ${it.name} - ${it.ordinal}")
                     requestExit = true
-                }.ffm(true).apply {
+                }.ffm(true).exec(false).apply {
                     if (Debug.inIde) dumb(true).system(true)
                     else system(true)
                     System.console()
-                }.encoding(System.console()?.charset() ?: Logging.out.charset()).build()
+                }.encoding(console.charset()).build()
             } else {
-                terminal = TerminalBuilder.builder().dumb(true).system(true).encoding(Logging.out.charset()).build()
+                terminal = TerminalBuilder.builder().dumb(true).system(true).exec(false).encoding(Logging.out.charset())
+                    .build()
             }
 
             val reader = LineReaderBuilder.builder().appName("GameLauncher").terminal(terminal).build()

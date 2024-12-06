@@ -14,10 +14,6 @@ plugins {
     alias(libs.plugins.idea.ext)
 }
 
-println("ää")
-System.getProperties().forEach { t, u -> println("$t: $u") }
-println(System.out.charset())
-
 idea.project.settings {
     runConfigurations {
         register<Application>("Main") {

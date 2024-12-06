@@ -9,6 +9,7 @@ plugins {
     id("gamelauncher-lwjgl")
     `maven-publish`
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.assignment)
     alias(libs.plugins.graal.native)
     alias(libs.plugins.android.library)
 }
@@ -19,7 +20,10 @@ android {
 }
 
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain {
+        this.languageVersion = JavaLanguageVersion.of(23)
+        this.vendor = JvmVendorSpec.ADOPTIUM
+    }
 //    jvm("lwjgl") {
 //    }
     jvm("lwjgl")
@@ -125,7 +129,10 @@ tasks {
                 jvmArgs(lwjglDefaultDevArgs)
                 jvmArgs(lwjglDefaultDevInitSystemProperties.map { "-D" + it.key + "=" + it.value })
                 jvmArgs("-Dgamelauncher.skipsysprops=true")
-                jvmArgs("-Dstdout.encoding=${System.out.charset().name()}", "-Dstderr.encoding=${System.err.charset().name()}")
+                jvmArgs(
+                    "-Dstdout.encoding=${System.out.charset().name()}",
+                    "-Dstderr.encoding=${System.err.charset().name()}"
+                )
                 standardInput = System.`in`
                 standardOutput = System.out
                 errorOutput = System.err

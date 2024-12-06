@@ -12,7 +12,6 @@ import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.locks.ReentrantLock
-import java.lang.Thread as JThread
 
 expect abstract class AbstractThread : AbstractGameResource, Thread {
     constructor(group: ThreadGroup)
@@ -90,11 +89,19 @@ abstract class AbstractExecutorThread : AbstractThread, ExecutorThread, StackTra
     }
 
     private fun loop() {
+        preLoop()
+        workQueue()
+        workExecution()
+        postLoop()
+    }
+
+    protected open fun preLoop() {
         if (shouldWaitForSignal()) {
             waitForSignal()
         }
-        workQueue()
-        workExecution()
+    }
+
+    protected open fun postLoop() {
     }
 
     protected open fun signal() {

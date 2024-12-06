@@ -3,7 +3,6 @@ package de.dasbabypixel.gamelauncher.lwjgl.window
 import de.dasbabypixel.gamelauncher.api.GameLauncher
 import de.dasbabypixel.gamelauncher.api.util.GameException
 import de.dasbabypixel.gamelauncher.api.util.concurrent.Executor
-import de.dasbabypixel.gamelauncher.api.util.concurrent.Thread
 import de.dasbabypixel.gamelauncher.api.util.concurrent.ThreadGroup
 import de.dasbabypixel.gamelauncher.api.util.concurrent.currentThread
 import de.dasbabypixel.gamelauncher.api.util.function.GameCallable
@@ -32,6 +31,8 @@ class GLFWWindow : Window {
     val renderThread: GLFWRenderThread
     private val group: ThreadGroup
     val creationFuture = CompletableFuture<Unit>()
+    private var renderImplementation: WindowRenderImplementation = DoubleBufferedAsyncRenderer()
+
     var requestCloseCallback: GameConsumer<GLFWWindow>? = null
     var glfwId: Long = 0L
         private set
@@ -42,6 +43,10 @@ class GLFWWindow : Window {
         this.sharedWindows.add(this)
         this.group = ThreadGroup.create("GLFWWindow-${id}", parent?.group ?: currentThread().group)
         this.renderThread = GLFWRenderThread(group, this)
+    }
+
+    fun changeRenderImplementation(renderImplementation: WindowRenderImplementation) {
+        this.renderImplementation = renderImplementation
     }
 
     internal fun create(): CompletableFuture<Unit> {
@@ -106,7 +111,7 @@ class GLFWWindow : Window {
                 glfwDefaultWindowHints()
                 glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE)
                 glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
-                glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE)
+//                glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE)
                 glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_FALSE)
 
                 val primaryMonitorId = glfwGetPrimaryMonitor()
@@ -132,6 +137,7 @@ class GLFWWindow : Window {
                         GameLauncher.handleException(t)
                     }
                 }
+                glfwSetFramebufferSizeCallback(glfwId) { _, w, h -> renderThread.framebufferSize(w, h) }
             } catch (t: Throwable) {
                 creationFuture.completeExceptionally(t)
                 throw t
