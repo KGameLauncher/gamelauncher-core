@@ -12,13 +12,13 @@ import org.lwjgl.opengl.GL11.glVertex2f
 import org.lwjgl.opengl.GL46
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.LockSupport
+import java.util.concurrent.locks.ReentrantLock
 
 class GLFWRenderThread(group: ThreadGroup, val window: GLFWWindow) :
     AbstractExecutorThread(group, "GLFWRenderThread-${window.id}"), RenderThread {
     private val frameSync = FrameSync()
-    private var framebufferUpdate = false
-    private var framebufferWidth = 0
-    private var framebufferHeight = 0
+    private val rendererLock = ReentrantLock()
+    private var renderer: RenderImplementationRenderer? = null
 
     override fun startExecuting() {
         window.creationFuture.join()
@@ -26,6 +26,15 @@ class GLFWRenderThread(group: ThreadGroup, val window: GLFWWindow) :
         GL.createCapabilities()
         GL46.glClearColor(1F, 0F, 0F, 0.5F)
         singleRender()
+    }
+
+    fun setRenderer(renderer: RenderImplementationRenderer?) {
+        rendererLock.lock()
+        try {
+            this.renderer = renderer
+        } finally {
+            rendererLock.unlock()
+        }
     }
 
     override fun preLoop() {
@@ -40,66 +49,25 @@ class GLFWRenderThread(group: ThreadGroup, val window: GLFWWindow) :
         singleRender()
     }
 
-    private fun nextFrame(): Long {
-        return frameSync.startNextFrame()
+    fun startNextFrame(frames: Int = 1): Long {
+        return frameSync.startNextFrame(frames)
     }
 
-    override fun signal() {
-        nextFrame()
+    fun awaitFrame(frame: Long) {
+        frameSync.waitForFrame(frame)
     }
 
-    fun singleRender() {
-        updateViewport()
-
-        val time = (System.currentTimeMillis() % 1000000).toFloat()
-        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT)
-        GL46.glBegin(GL46.GL_TRIANGLES)
-//        glVertex2f(sin(time / 900), cos(time / 2763F))
-//        glVertex2f(cos(time / 1300 + 90), cos(time / 1050 + 10))
-//        glVertex2f(sin(time / 1620 + 10), sin(time / 1000F))
-        glVertex2f(-1F, -1F)
-        glVertex2f(0F, 1F)
-        glVertex2f(1F, 0F)
-        GL46.glEnd()
-        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(30))
-        glfwSwapBuffers(window.glfwId)
+    public override fun signal() {
+        startNextFrame()
     }
 
-    fun framebufferSize(w: Int, h: Int) {
-        lock.lock()
+    private fun singleRender() {
+        rendererLock.lock()
         try {
-            framebufferWidth = w
-            framebufferHeight = h
-            framebufferUpdate = true
-            signal()
+            val renderer = this.renderer
+            renderer?.render(window)
         } finally {
-            lock.unlock()
-        }
-        GLFW.glfwSetWindowTitle(window.glfwId, "GL: ${w}x$h")
-        val frame = frameSync.startNextFrame(1)
-//        frameSync.waitForFrame(frame)
-    }
-
-    private fun updateViewport() {
-        val fbUpdate: Boolean
-        val fbw: Int
-        val fbh: Int
-        lock.lock()
-        try {
-            fbUpdate = this.framebufferUpdate
-            if (fbUpdate) {
-                this.framebufferUpdate = false
-                fbw = this.framebufferWidth
-                fbh = this.framebufferHeight
-            } else {
-                fbw = 0
-                fbh = 0
-            }
-        } finally {
-            lock.unlock()
-        }
-        if (fbUpdate) {
-            GL11.glViewport(0, 0, fbw, fbh)
+            rendererLock.unlock()
         }
     }
 

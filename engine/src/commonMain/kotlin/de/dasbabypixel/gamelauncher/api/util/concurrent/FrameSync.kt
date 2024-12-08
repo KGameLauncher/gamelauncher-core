@@ -11,7 +11,7 @@ class FrameSync {
     // -1 = unlimited, 0 = vsync, -2=on-demand
     private var framerate = 0
     private val hasNewFramerate = AtomicBoolean(true)
-    private val newFramerate = AtomicInteger(15)
+    private val newFramerate = AtomicInteger(-2)
     private val incrementFrames = AtomicInteger(0)
     private val frameTracker = FrameTracker()
 

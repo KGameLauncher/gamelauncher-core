@@ -31,7 +31,8 @@ class GLFWWindow : Window {
     val renderThread: GLFWRenderThread
     private val group: ThreadGroup
     val creationFuture = CompletableFuture<Unit>()
-    private var renderImplementation: WindowRenderImplementation = DoubleBufferedAsyncRenderer()
+    private var renderImplementation: WindowRenderImplementation = DoubleBufferedAsyncRenderImpl()
+    private var renderImplementationRenderer: RenderImplementationRenderer? = null
 
     var requestCloseCallback: GameConsumer<GLFWWindow>? = null
     var glfwId: Long = 0L
@@ -45,8 +46,18 @@ class GLFWWindow : Window {
         this.renderThread = GLFWRenderThread(group, this)
     }
 
-    fun changeRenderImplementation(renderImplementation: WindowRenderImplementation) {
-        this.renderImplementation = renderImplementation
+    fun changeRenderImplementation(renderImplementation: WindowRenderImplementation): CompletableFuture<Unit> {
+        return runWindow {
+            if (creationFuture.isDone) {
+                renderThread.setRenderer(null)
+                this.renderImplementation.disable(this, renderImplementationRenderer!!)
+                renderImplementationRenderer = null
+            }
+            this.renderImplementation = renderImplementation
+            if (creationFuture.isDone) {
+                renderImplementationRenderer = this.renderImplementation.enable(this)
+            }
+        }
     }
 
     internal fun create(): CompletableFuture<Unit> {
@@ -59,6 +70,12 @@ class GLFWWindow : Window {
 
     override fun hide(): CompletableFuture<Unit> {
         return runWindow { glfwHideWindow(it) }
+    }
+
+    fun setTransparent(transparent: Boolean): CompletableFuture<Unit> {
+        return runWindow {
+            glfwSetWindowAttrib(glfwId, GLFW_TRANSPARENT_FRAMEBUFFER, if (transparent) GLFW_TRUE else GLFW_FALSE)
+        }
     }
 
     private inline fun <T> runWindow(crossinline function: (Long) -> T): CompletableFuture<T> {
@@ -111,7 +128,7 @@ class GLFWWindow : Window {
                 glfwDefaultWindowHints()
                 glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE)
                 glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
-//                glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE)
+                glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE)
                 glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_FALSE)
 
                 val primaryMonitorId = glfwGetPrimaryMonitor()
@@ -137,7 +154,8 @@ class GLFWWindow : Window {
                         GameLauncher.handleException(t)
                     }
                 }
-                glfwSetFramebufferSizeCallback(glfwId) { _, w, h -> renderThread.framebufferSize(w, h) }
+                renderImplementationRenderer = renderImplementation.enable(this@GLFWWindow)
+                renderThread.setRenderer(renderImplementationRenderer)
             } catch (t: Throwable) {
                 creationFuture.completeExceptionally(t)
                 throw t
