@@ -1,6 +1,6 @@
 [versions]
 android-gradle-plugin = "8.5.2"
-desugar_jdk_libs_nio = "2.1.2"
+desugar_jdk_libs_nio = "2.1.4"
 kotlin = "2.0.21"
 androidx-appcompat = "1.7.0"
 slf4j = "2.0.16"
